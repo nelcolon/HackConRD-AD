@@ -1,4 +1,4 @@
-# 🔐 Hardening for Active Directory Domain Controller
+# 🔐 GOAD_HackConRD2025_GPO
 ## WorkShops Atacando & Defendiendo Windows Active Directory HackConRD2025
 
 [![Windows](https://img.shields.io/badge/Windows-Active%20Directory-blue?style=flat&logo=windows)](https://www.microsoft.com/)  
