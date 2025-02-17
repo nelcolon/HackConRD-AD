@@ -1,4 +1,4 @@
-# HackConRD-AD  
+# HackConRD2025-AD  
 **HackConRD - Atacando y Defendiendo Active Directory**  
 
 Este repositorio contiene información sobre las técnicas utilizadas en el workshop de **Ataque y Defensa de Active Directory**, donde se explorarán diferentes vulnerabilidades y métodos utilizados en entornos de Active Directory (AD).  
