@@ -100,3 +100,10 @@ Get-ADUser -Filter {LastLogonTimeStamp -lt $time} | Disable-ADAccount
 New-NetFirewallRule -DisplayName "Allow RDP from Admin IPs" -Direction Inbound -Protocol TCP -LocalPort 3389 -RemoteAddress 192.168.56.100,192.168.56.101 -Action Allow
 # Bloquea el acceso RDP desde otras direcciones IP.
 New-NetFirewallRule -DisplayName "Block RDP from Others" -Direction Inbound -Protocol TCP -LocalPort 3389 -Action Block
+
+
+---
+👾 ¡Gracias por leer!👾
+
+❤️ **Con amor, NickGitHub: [J0s3F3lix](https://github.com/J0s3F3lix)**  
+🛡️ El contenido fue realizado en ayuda de Moises Mejia y Enrique Eusebio Landestoy**🛡️
