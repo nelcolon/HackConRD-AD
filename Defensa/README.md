@@ -17,4 +17,6 @@ El script debe ser ejecutado con privilegios de administrador en el controlador 
 Este script está diseñado específicamente para un entorno de **Active Directory GOAD**. **No debe ser ejecutado en otros entornos** sin primero verificar que las configuraciones sean apropiadas.
 
 ---
+👾 ¡Gracias por leer!👾
 
+❤️ **Con amor, NickGitHub: [J0s3F3lix](https://github.com/J0s3F3lix)**  
