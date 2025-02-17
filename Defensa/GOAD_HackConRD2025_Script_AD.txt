@@ -1,0 +1,114 @@
+### Configuración de Seguridad para Active Directory en Windows Server 2019
+### Basado en CIS Benchmark
+
+# Advertencia:
+# Este script debe ser ejecutado solo en un ambiente GOAD (Grupo de Active Directory).
+# Se recomienda guardar este archivo con la extensión .ps1 y ejecutarlo con privilegios de administrador en el controlador de dominio adecuado.
+
+# Crear y configurar la GPO HackConRD2025_Hardening_AD
+# Este comando crea una nueva GPO (Group Policy Object) llamada "HackConRD2025_Hardening_AD" y la enlaza a la unidad organizativa (OU) de "Domain Controllers".
+New-GPO -Name "HackConRD2025_Hardening_AD" | New-GPLink -Target "OU=Domain Controllers,DC=sevenkindoms,DC=local"
+
+# Configuraciones Aplicadas en la GPO
+
+# 1. Configurar SMBv1 como deshabilitado
+# SMBv1 es un protocolo antiguo que tiene vulnerabilidades conocidas. Deshabilitarlo ayuda a asegurar la red.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -ValueName "SMB1" -Type DWord -Value 0
+
+# 2. Configurar LDAP Signing y Channel Binding
+# LDAP Signing y Channel Binding ayudan a proteger las comunicaciones LDAP contra ataques de intercepción.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\NTDS\Parameters" -ValueName "LDAPServerIntegrity" -Type DWord -Value 2
+
+# 3. Habilitar Windows Defender Credential Guard
+# Windows Defender Credential Guard protege las credenciales de usuario y otras claves del sistema.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" -ValueName "LsaCfgFlags" -Type DWord -Value 1
+
+# 4. Protección contra ataques de Kerberos
+# Esto configura el tiempo de expiración de los tickets de Kerberos para evitar ataques como el ticket replay.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Control\Lsa\Kerberos" -ValueName "TicketExpiry" -Type DWord -Value 600
+
+# 5. Deshabilitar acceso anónimo a SMB
+# Esto asegura que no se permita el acceso anónimo a los recursos SMB en la red.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -ValueName "RestrictAnonymous" -Type DWord -Value 1
+
+# 6. Habilitar SMB Signing
+# Habilitar SMB Signing asegura que las conexiones SMB sean firmadas, aumentando la seguridad de las mismas.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" -ValueName "RequireSecuritySignature" -Type DWord -Value 1
+
+# 7. Deshabilitar LLMNR y NBT-NS
+# LLMNR y NBT-NS son protocolos de resolución de nombres vulnerables. Deshabilitarlos previene ataques de suplantación de identidad.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -ValueName "EnableMulticast" -Type DWord -Value 0
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\NetBT\Parameters" -ValueName "NodeType" -Type DWord -Value 2
+
+# 8. Protección contra NTLM Relay
+# Deshabilitar el uso de NTLM ayuda a evitar ataques de retransmisión (Relay Attacks) en la red.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" -ValueName "DisableNTLMInDomain" -Type DWord -Value 1
+
+# 9. Protección contra Lateral Movement
+# Esto restringe el acceso remoto a las cuentas de administrador de dominio, protegiendo el entorno de movimiento lateral.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Control\Lsa" -ValueName "RestrictRemoteSAM" -Type DWord -Value 1
+
+# 10. Protección contra escalación de privilegios
+# Esto asegura que el Control de Cuentas de Usuario (UAC) esté habilitado, protegiendo el sistema contra elevaciones de privilegios no autorizadas.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -ValueName "EnableLUA" -Type DWord -Value 1
+
+# 11. Limitar la cantidad de credenciales guardadas en cache
+# Configuracion para evitar que las credenciales de los multiplex usuario que se puedan loguear en un equipo sea guardadas.
+# Este valor debe ser ajustado dependiendo donde sera utilizando para Server o Worksatation.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -ValueName "CachedLogonsCount" -Type DWord -Value 1
+
+# 12. Configuración de Política de Auditoría
+# Configura las auditorías para registrar eventos de inicio/cierre de sesión, cambios en las políticas y accesos a objetos.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -ValueName "Category" -Type MultiString -Value "Logon/Logoff"
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -ValueName "Policy Change" -Type MultiString -Value "Success,Failure"
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -ValueName "Object Access" -Type MultiString -Value "Success,Failure"
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -ValueName "Privilege Use" -Type MultiString -Value "Success,Failure"
+
+# 13. Configuración de Auditoría Avanzada
+# Habilita auditorías avanzadas para actividades críticas como inicio de sesión, bloqueos de cuenta y creación de procesos.
+Invoke-Command -ScriptBlock {
+    Auditpol.exe /set /subcategory:"Logon" /success:enable /failure:enable
+    Auditpol.exe /set /subcategory:"Account Lockout" /success:enable /failure:enable
+    Auditpol.exe /set /subcategory:"Process Creation" /success:enable
+    Auditpol.exe /set /subcategory:"Account Management" /success:enable /failure:enable
+    Auditpol.exe /set /subcategory:"Directory Service Access" /success:enable /failure:enable
+    Auditpol.exe /set /subcategory:"Logoff" /success:enable /failure:enable
+}
+
+# 14. Configurar Política de Contraseñas
+# Configura las políticas de contraseñas, como la longitud mínima, complejidad y duración máxima.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "MinimumPasswordAge" -Type DWord -Value 1
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "MaximumPasswordAge" -Type DWord -Value 60
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "MinimumPasswordLength" -Type DWord -Value 12
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "PasswordComplexity" -Type DWord -Value 1
+
+# 15. Configurar Bloqueo de Cuentas
+# Configura las políticas de bloqueo de cuentas, incluyendo el umbral de intentos fallidos y la duración del bloqueo.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "LockoutThreshold" -Type DWord -Value 5
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "LockoutDuration" -Type DWord -Value 15
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "LockoutWindow" -Type DWord -Value 15
+
+# 15. Configurar Kerberos Encryption
+# Establece los tipos de cifrado admitidos para el protocolo Kerberos, mejorando la seguridad.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "msDS-SupportedEncryptionTypes" -Type DWord -Value 24
+
+Write-Host "Configuraciones aplicadas correctamente en la GPO HackConRD2025_Hardening_AD." -ForegroundColor Green
+
+# Deshabilitar cuentas inactivas (30 días de inactividad)
+# Este comando deshabilita las cuentas de usuario que no han iniciado sesión en los últimos 30 días.
+$inactiveDays = 30
+$time = (Get-Date).Adddays(-$inactiveDays)
+Get-ADUser -Filter {LastLogonTimeStamp -lt $time} | Disable-ADAccount
+
+# Aplicar reglas de firewall restrictivas para RDP
+# Estas reglas permiten el acceso a RDP solo desde direcciones IP específicas (en este caso 192.168.56.100 y 192.168.56.101).
+New-NetFirewallRule -DisplayName "Allow RDP from Admin IPs" -Direction Inbound -Protocol TCP -LocalPort 3389 -RemoteAddress 192.168.56.100,192.168.56.101 -Action Allow
+# Bloquea el acceso RDP desde otras direcciones IP.
+New-NetFirewallRule -DisplayName "Block RDP from Others" -Direction Inbound -Protocol TCP -LocalPort 3389 -Action Block
+
+
+---
+👾 ¡Gracias por leer!👾
+
+❤️ **Con amor, NickGitHub: [J0s3F3lix](https://github.com/J0s3F3lix)**  
+🛡️ El contenido fue realizado en ayuda de Moises Mejia y Enrique Eusebio Landestoy**🛡️
