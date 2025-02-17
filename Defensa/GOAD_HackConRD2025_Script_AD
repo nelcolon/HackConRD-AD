@@ -52,14 +52,19 @@ Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\Current
 # Esto asegura que el Control de Cuentas de Usuario (UAC) esté habilitado, protegiendo el sistema contra elevaciones de privilegios no autorizadas.
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -ValueName "EnableLUA" -Type DWord -Value 1
 
-# 11. Configuración de Política de Auditoría
+# 11. Limitar la cantidad de credenciales guardadas en cache
+# Configuracion para evitar que las credenciales de los multiplex usuario que se puedan loguear en un equipo sea guardadas.
+# Este valor debe ser ajustado dependiendo donde sera utilizando para Server o Worksatation.
+Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\Winlogon" -ValueName "CachedLogonsCount" -Type DWord -Value 1
+
+# 12. Configuración de Política de Auditoría
 # Configura las auditorías para registrar eventos de inicio/cierre de sesión, cambios en las políticas y accesos a objetos.
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -ValueName "Category" -Type MultiString -Value "Logon/Logoff"
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -ValueName "Policy Change" -Type MultiString -Value "Success,Failure"
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -ValueName "Object Access" -Type MultiString -Value "Success,Failure"
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit" -ValueName "Privilege Use" -Type MultiString -Value "Success,Failure"
 
-# 12. Configuración de Auditoría Avanzada
+# 13. Configuración de Auditoría Avanzada
 # Habilita auditorías avanzadas para actividades críticas como inicio de sesión, bloqueos de cuenta y creación de procesos.
 Invoke-Command -ScriptBlock {
     Auditpol.exe /set /subcategory:"Logon" /success:enable /failure:enable
@@ -70,14 +75,14 @@ Invoke-Command -ScriptBlock {
     Auditpol.exe /set /subcategory:"Logoff" /success:enable /failure:enable
 }
 
-# 13. Configurar Política de Contraseñas
+# 14. Configurar Política de Contraseñas
 # Configura las políticas de contraseñas, como la longitud mínima, complejidad y duración máxima.
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "MinimumPasswordAge" -Type DWord -Value 1
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "MaximumPasswordAge" -Type DWord -Value 60
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "MinimumPasswordLength" -Type DWord -Value 12
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "PasswordComplexity" -Type DWord -Value 1
 
-# 14. Configurar Bloqueo de Cuentas
+# 15. Configurar Bloqueo de Cuentas
 # Configura las políticas de bloqueo de cuentas, incluyendo el umbral de intentos fallidos y la duración del bloqueo.
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "LockoutThreshold" -Type DWord -Value 5
 Set-GPRegistryValue -Name "HackConRD2025_Hardening_AD" -Key "HKLM\SYSTEM\CurrentControlSet\Services\Netlogon\Parameters" -ValueName "LockoutDuration" -Type DWord -Value 15
