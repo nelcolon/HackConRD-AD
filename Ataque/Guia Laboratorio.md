@@ -23,7 +23,7 @@ Este paso ayuda a identificar servicios clave como SMB, LDAP y Kerberos.
 Para descubrir usuarios en el dominio, se pueden utilizar múltiples herramientas:
 
 ```bash
-netexec smb 192.168.46.10-22 --users --continue-on-success
+netexec smb 192.168.46.10-22 --users
 ```
 
 También con `rpcclient`:

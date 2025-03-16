@@ -1,14 +1,14 @@
 ## AS-REP Roasting
 ### 💡Explicación del ataque
-El ataque **AS‑REP Roasting** explota cuentas de Active Directory que tienen deshabilitada la preautenticación Kerberos. En Kerberos normalmente un usuario debe probar su identidad antes de obtener un ticket (preautenticación); sin embargo, si la cuenta objetivo tiene la propiedad _“Do not require Kerberos preauthentication”_ activada, cualquiera puede solicitar un Ticket de Autenticación (AS-REP) para esa cuenta sin conocer su contraseña. 
+El ataque **AS‑REP Roasting** explota cuentas de Active Directory que no requieren la preautenticación Kerberos. En Kerberos normalmente un usuario debe probar su identidad antes de obtener un ticket (preautenticación); sin embargo, si la cuenta objetivo tiene la propiedad _“Do not require Kerberos preauthentication”_ activada, cualquiera puede solicitar un Ticket de Autenticación (AS-REP) para esa cuenta sin conocer su contraseña. 
 
 El Active Directory responderá con un mensaje cifrado con la clave derivada de la contraseña del usuario. Este mensaje capturado (el AS-REP) puede ser llevado por el atacante a su propia máquina y **crackeado** offline, revelando potencialmente la contraseña en texto plano de esa cuenta. En resumen, AS‑REP Roasting permite obtener hashes de contraseñas de cuentas que no requieren preautenticación, para luego romper esas contraseñas fuera del entorno de la víctima.
 
 ### 🤔 But, why?
-Los atacantes usan AS‑REP Roasting porque es un medio relativamente sencillo y discreto de obtener credenciales válidas. No necesitan tener privilegios altos ni explotar vulnerabilidades de software: basta con encontrar una cuenta configurada sin preautenticación Kerberos. El beneficio es considerable ya que, al crackear offline el hash obtenido, el atacante consigue la contraseña en claro de un usuario del dominio, lo que le permite moverse lateralmente o escalar privilegios sin alertar directamente a la víctima (el cracking ocurre fuera de la red objetivo)​. Además, no requiere interacción con la cuenta objetivo (no se bloquea la cuenta ni se generan logs de fallo de autenticación en el dominio porque la solicitud AS-REP es _legítima_ bajo las reglas de Kerberos para esa cuenta). Es una táctica destacada incluso por agencias gubernamentales de ciberseguridad, ya que forma parte de las técnicas comunes de comprometer Active Directory.
+Los atacantes usan AS‑REP Roasting porque es un medio relativamente sencillo y discreto de obtener credenciales válidas. No necesitan tener privilegios altos ni explotar vulnerabilidades de software: basta con encontrar una cuenta configurada sin preautenticación Kerberos. El beneficio es considerable ya que, al crackear offline el hash obtenido, el atacante consigue la contraseña en claro de un usuario del dominio, lo que le permite moverse lateralmente o escalar privilegios sin alertar directamente a la víctima (el cracking ocurre fuera de la red objetivo)​. Además, no requiere interacción con la cuenta objetivo (no se bloquea la cuenta ni se generan logs de autenticación fallida en el dominio). Es una táctica destacada incluso por agencias gubernamentales de ciberseguridad, ya que forma parte de las técnicas comunes de comprometer Active Directory.
 
 ### 💻 Requerimientos
-Para que AS‑REP Roasting sea posible, debe existir al menos una cuenta de usuario en AD con la preautenticación Kerberos deshabilitada​. Esta configuración **no es habitual** en cuentas normales, pero a veces se encuentra en cuentas de servicio, cuentas antiguas o por mala configuración. El usuario objetivo tiene que estar habilitado en el dominio (no bloqueado ni expirado) y conocer su username. No se requiere ningún acceso previo al dominio (se puede hacer de forma no autenticada enviando solicitudes de Kerberos AS-REQ “a ciegas” para distintos usuarios); sin embargo, si el atacante ya dispone de un listado de usuarios válidos del dominio, le será más fácil identificar qué cuentas tienen deshabilitada la preautenticación​.
+Para que AS‑REP Roasting sea posible, debe existir al menos una cuenta de usuario en AD con la preautenticación Kerberos no requerida​. Esta configuración **no es habitual** en cuentas normales, pero a veces se encuentra en cuentas de servicio, cuentas antiguas o por mala configuración. El usuario objetivo tiene que estar habilitado en el dominio (no bloqueado ni expirado) y conocer su username. No se requiere ningún acceso previo al dominio (se puede hacer de forma no autenticada enviando solicitudes de Kerberos AS-REQ “a ciegas” para distintos usuarios); sin embargo, si el atacante ya dispone de un listado de usuarios válidos del dominio, le será más fácil identificar qué cuentas tienen deshabilitada la preautenticación​.
 
 ### ⚔️ Ataque
 Una forma práctica de realizar AS‑REP Roasting es usando la herramienta **GetNPUsers.py** de la suite Impacket:
@@ -24,14 +24,13 @@ hashcat -m 18200 asrephash.txt /usr/share/wordlists/rockyou.txt
 ```
 
 ### 🛡️Defensa
-- Evitar que existan cuentas con la preautenticación Kerberos deshabilitada
 - No utilice el flag **_DONT_REQ_PREAUTH_**. Si es **muy necesario**, asignar una contraseña muy robusta al usuario con este flag.
-- Monitoreo constante de Kerberos para movimientos extraños. 
+- Evitar que existan cuentas con la preautenticación Kerberos deshabilitada.
 
 -------
 ## Kerberoasting
 ### 💡Explicación del ataque
-Es un ataque dirigido a las cuentas de servicio en Active Directory que poseen un **Service Principal Name (SPN)** registrado. El objetivo es obtener tickets de servicio Kerberos (TGS) que estén asociados a servicios ejecutándose bajo cuentas de usuario del dominio. 
+Es un ataque dirigido a las cuentas de servicio en Active Directory que poseen un **Service Principal Name (SPN)** registrado. El objetivo es obtener Tickets Granting Services (TGS) que estén asociados a servicios ejecutándose bajo cuentas de usuario del dominio. 
 
 En AD, cuando un usuario solicita acceso a un servicio, obtiene un ticket TGS cifrado con la contraseña (hash) de la cuenta de servicio correspondiente. Kerberoasting aprovecha esta mecánica: un usuario malintencionado, con credenciales de bajo privilegio en el dominio, solicita tickets de todos los servicios configurados (SPNs) y recopila los TGS resultantes​.
 
@@ -45,8 +44,7 @@ Donde esta la cruz del asunto?
 1. Compañías dejan las mismas contraseñas por años, de manera estática y sin cambiar absolutamente nada.
 2. Como el ataque se produce offline, dificulta un poco la detección.
 ### 💻 Requerimientos
-- Un ambiente con cuentas de servicio con SPN registrados. (Cuentas de SQL Server, IIS, Exchange, etc)
-- Contraseñas débiles y que no se roten con frecuencia
+- Un ambiente con cuentas que contengan SPN registrados. (Cuentas de SQL Server, IIS, Exchange, etc)
 ### ⚔️ Ataque
 
 En la práctica, un atacante con un usuario común del dominio puede ejecutar Impacket **GetUserSPNs.py** para automatizar el Kerberoasting.
@@ -60,29 +58,30 @@ Con el archivo generado por esta herramienta, podemos proceder a crackearla:
 hashcat -m 13100 -a 0 kerberoasting.hashes /usr/share/wordlists/rockyou.txt -O
 ```
 ### 🛡️Defensa
-- Usar contraseñas largas y complejas para cuentas de servicio es fundamental 
+- Usar contraseñas largas y complejas para cuentas con SPN o es fundamental 
 - Aplicar el principio de **privilegio mínimo** a cuentas de servicio: No dar mas permisos de los necesarios.
-- **Monitoreo constante**. El evento 4769 es crucial, ya que se refiere a que un ticket de servicio de Kerberos fue solicitado. Muchas solicitudes en conjunto de esto puede indicar un posible ataque.
 
 ---
 ## LLMNR Poisoning y NTLM Relay
 ### 💡Explicación del ataque
 El ataque de **envenenamiento de LLMNR (Link-Local Multicast Name Resolution)** explota un mecanismo de resolución de nombres en redes Windows. Cuando un equipo Windows no logra resolver un nombre de host mediante DNS, por defecto recurre a protocolos de resolución local como LLMNR o NBNS.
 
-Por ejemplo, si un usuario escribiera mal `\\servidor` en vez de `\\servidorempresa`, su PC emitiría un mensaje LLMNR preguntando por `servidor`. El atacante (ejecutando una herramienta como **Responder**) responde diciendo “Yo soy servidor” y el equipo de la víctima, creyéndole, intenta autenticarse contra el atacante.
+Por ejemplo, si un usuario busca el recurso `\\servidor`  su PC emitiría un mensaje LLMNR preguntando por `servidor`. El atacante (ejecutando una herramienta como **Responder**) responde diciendo “Yo soy ese servidor” y el equipo de la víctima, creyéndole, intenta autenticarse contra el atacante.
 
 Esta autenticación suele ser NTLM, lo cual resulta en el atacante recibiendo el hash de la contraseña de la victima.
 #### **NTLM Relay**
-El atacante puede realizar un ataque de relay NTLM después del poisoning. Esto hace que el usuario utilice las credenciales obtenidas y trate de hacer autenticación en otro servidor o servicio, sin necesidad de conocer la contraseña. A su vez LLMNR/NBNS (Ya estan trabajando para remover esta funcion en su totalidad en versiones futuras de Windows) están habilitados por defecto en Windows por compatibilidad, y muchas organizaciones no los deshabilitan, por lo que el terreno suele estar abonado para el ataque​.
+El atacante puede realizar un ataque de relay NTLM después del poisoning. Esto hace que el usuario utilice las credenciales obtenidas y trate de hacer autenticación en otro servidor o servicio, sin necesidad de conocer la contraseña. A su vez LLMNR/NBNS (Ya están trabajando para remover esta función en su totalidad en versiones futuras de Windows) están habilitados por defecto en Windows por compatibilidad, y muchas organizaciones no los deshabilitan, por lo que el ambiente suele estar configurado para el ataque​.
 
 ### 🤔 But, why?
 Los atacantes la usan porque **no requiere credenciales ni explotar vulnerabilidades de software**. Usualmente utilizada al inicio de un compromiso (post foothold).
 - Pueden ser utilizados en conjunto con el NTLM Relay para realizar autenticacion en otros servicios/servidores/recursos del Active Directory.
 - Al igual que en Kerberoasting y AS-REP Roasting pueden ser crackeados de manera offline.
-- El hash puede a veces ser reutilizado en ataques de **PTH (Pass The Hash)**
+
+>***📝 Este ataque no solo afecta estos 2 protocolos, si no que puede afectar tambien el MDNS.***
+
 ### 💻 Requerimientos
 - Protocolos LLMBR / NBTS-NS deben estar activos.
-- Resolucion de nombre fallida 
+- SMB Signing : False en la maquina. 
 ### ⚔️ Ataque
 #### LLMNR Poisoning
 Con Responder:
@@ -113,9 +112,9 @@ ntlmrelayx.py -tf relay.txt -of netntlm -t NORTH\\EDDARD.STARK@192.168.46.22 -sm
 ## ADCS Exploits
 
 ### 💡Explicación del ataque
-**Active Directory Certificate Services (AD CS)** puede ser explotado si está mal configurado. En el 2021, el equipo de Specter Ops lanza una whitepaper conteniendo muchas formas de ataques a este servicio de Active Directory. La que se muestra en esta guia es solo 1 de un grupo de familias de ataques. En concreto, ESC1 ocurre cuando una plantilla de certificado de la CA está configurada de tal forma que **cualquier usuario autenticado puede solicitar un certificado para otra identidad** (por ejemplo, hacerse un certificado a nombre del administrador de dominio) sin aprobación administrativa
+**Active Directory Certificate Services (AD CS)** puede ser explotado si está mal configurado. En el 2021, el equipo de Specter Ops lanza un whitepaper conteniendo muchas formas de ataques a este servicio de Active Directory. La que se muestra en esta guia es solo 1 de un grupo de familias de ataques. En concreto, ESC1 ocurre cuando una plantilla de certificado de la CA está configurada de tal forma que **cualquier usuario autenticado puede solicitar un certificado para otra identidad** (por ejemplo, hacerse un certificado a nombre del administrador de dominio) sin aprobación administrativa.
 ### 🤔 But, why?
-Brinda ventajas a los atacantes que no se encuentran con otros métodos, específicamente, tienen mucha evasión ya que los atacantes no requieren forzar contraseñas o explotar vulnerabilidades de sistemas operativos. Permiten persistencia ya que incluso si un usuario cambia la contraseña, un certificado anteriormente garantizado, seguirá vigente. La discreción es otro punto importante a tomar en cuenta al momento de utilizar este ataque, muchas veces las organizaciones no tienen alertas configuradas para autenticación con certificados.
+Brinda ventajas a los atacantes que no se encuentran con otros métodos, específicamente, tienen mucha evasión ya que los atacantes no requieren forzar contraseñas o explotar vulnerabilidades de sistemas operativos. Permiten persistencia ya que incluso si un usuario cambia la contraseña, un certificado anteriormente garantizado, seguirá vigente hasta la fecha de expiración del certificado. La discreción es otro punto importante a tomar en cuenta al momento de utilizar este ataque, muchas veces las organizaciones no tienen alertas configuradas para autenticación con certificados.
 ### 💻 Requerimientos
 - Un certificate template mal configurado en la CA de Active Directory que permita la inscripción (Enroll) a usuarios autenticados sin privilegios.
 - La plantilla tiene habilitado _“Enrollee supplies subject”_ = **True** (Esto permite al atacante definir el nombre de la cuenta en el certificado)
@@ -141,7 +140,6 @@ Con este hash, podemos utilizarlo para logearnos a otros servidores, servicios, 
 ### 🛡️Defensa
 - Restringir qué usuarios o grupos pueden solicitar certificados a partir de plantillas sensibles.
 - Restringir los permisos de inscripción: Asegurar que solo usuarios autorizados o cuentas de servicio puedan solicitar certificados utilizando los permisos de **Enroll** y **AutoEnroll**.
-- Revisar el grupo **CERTSVC_DCOM_ACCESS** para garantizar que solo usuarios y equipos legítimos tengan acceso a la autoridad certificadora (CA).
 - Habilitar el registro detallado de solicitudes y registros de certificados en la CA, asegurando que todas las operaciones de certificados, incluyendo emisión, renovación y revocación, sean registradas.
 - Revisar regularmente los registros para detectar inscripciones sospechosas de certificados.
 - Utilizar soluciones **SIEM** como **Splunk** o **Sentinel** para alertar sobre actividad anómala relacionada con certificados.
@@ -165,11 +163,10 @@ Este comando generó silenciosamente un certificado y agregó la clave pública 
 ### 🛡️Defensa 
 - Monitoreo constante de ACL en AD (BloodHound funciona perfecto para esto)
 - Monitorear directamente cambios en el atributo `msDS-KeyCredentialLink`.
-- 
 ----
 ## DCSync
 ### 💡Explicación del ataque
-En un ataque DCSync, el atacante abusa de las funciones nativas de replicación de AD: esencialmente se hace pasar por un Domain Controller y solicita al controlador legitimo que le envíe los hashes de contraseñas de las cuentas. Esto se logra usando las llamadas de API al protocolo de replicación (MS-DRSR). Si el usuario tiene los permisos necesarios, el AD responderá con los datos solicitados, en este caso, el NTDS.dit(Base de datos de AD). Este ataque es altamente sigiloso porque ocurre como una operación de replicación más – el DC cree estar replicando hacia otro DC autorizado. Si un atacante logra ejecutar un DCSync, ha comprometido completamente el dominio. 
+En un ataque DCSync, el atacante abusa de las funciones nativas de replicación de AD: esencialmente se hace pasar por un Domain Controller y solicita al controlador legitimo que le envíe los hashes de contraseñas de las cuentas. Esto se logra usando las llamadas de API al protocolo de replicación (MS-DRSR). Si el usuario tiene los permisos necesarios, el AD responderá con los datos solicitados, en este caso, el NTDS.dit(Base de datos de AD). Este ataque crea muchos logs. Si un atacante logra ejecutar un DCSync, ha comprometido completamente el dominio. 
 ### 🤔 But, why?
 Los atacantes utilizan DCSync porque es **la manera más completa de robar credenciales en AD**. En lugar de tener que ir extrayendo credenciales de distintos equipos, con una sola acción centralizada obtienen todas las cuentas. Este le abre las puertas a movimiento lateral y persistencia.
 ### 💻 Requerimientos
@@ -181,7 +178,6 @@ secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.
 ### 🛡️Defensa 
 - Monitoreo eventos de replicacion de directorio (Observar eventos 4662)
 - Limitar las cuentas con permisos de replicacion.
-- Pueden utilizar cuentas honeypots, que si se utilizan para realizar ciertas acciones, levanten alertas.
 - Como práctica post-compromiso, si se sospecha que un atacante pudo hacer DCSync, **todas las contraseñas de todos los usuarios deben considerarse comprometidas** y restablecerse, incluyendo cambiar dos veces la contraseña de KRBTGT (para invalidar Golden Tickets)
 
 ----
@@ -207,6 +203,6 @@ wmiexec.py -k -dc-ip 192.168.46.10 -target-ip 192.168.46.10 -no-pass
 ```
 ### 🛡️Defensa 
 Este ataque, por su naturaleza, solo se efectúa una vez se tiene todo el dominio comprometido. Por lo tanto, la mayoría de las medidas son de recuperación y detección. 
-- Cambiar la contrasena de la cuenta KRBTGT dos veces seguidas.
-- Rotar periodicamente KRBTGT, aunque esto puede ser muy complejo.
-- Monitoreo de cuenta KRBTGT: esta no debe realizar login interactivo jamas, ni cambiar sus grupos a los que pertenece.
+- Cambiar la contraseña de la cuenta KRBTGT dos veces seguidas.
+- Rotar periódicamente KRBTGT, aunque esto puede ser muy complejo.
+- Monitoreo de cuenta KRBTGT: esta no debe realizar login interactivo jamás, ni cambiar sus grupos a los que pertenece.
