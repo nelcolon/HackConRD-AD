@@ -1,6 +1,6 @@
 # Guía de Ataques en Active Directory
 
-Esta guía documenta ataques contra Active Directory utilizando el laboratorio **Game of Active Directory** de Mayfly. Se incluyen pasos detallados de ejecución, contexto sobre por qué los ataques son posibles y mejores prácticas para reproducirlos de manera controlada.
+Documento con comandos a ejecutar durante el workshop.
 
 ## 1. Fase de Reconocimiento
 
