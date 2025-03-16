@@ -29,7 +29,7 @@ Técnicas utilizadas por atacantes para **mantener persistencia** dentro del dom
 ---
 
 ### 📌 Nota Importante  
-Este workshop está diseñado exclusivamente para entornos **controlados y de pruebas**. Las técnicas aquí descritas deben ser utilizadas únicamente con fines educativos y de auditoría de seguridad. El uso indebido de estas herramientas en sistemas sin autorización puede ser ilegal.  
+Este workshop está diseñado exclusivamente para entornos **controlados y de pruebas**. Las técnicas aquí descritas deben ser utilizadas únicamente con fines educativos y de auditoría de seguridad. El uso indebido de estas herramientas en sistemas sin autorización es ilegal.  
 
 ---
 

@@ -94,19 +94,6 @@ bloodhound-python --zip -c All -d north.sevenkingdoms.local -u jon.snow@north.se
 - Limitar permisos innecesarios en cuentas y grupos.
 - Monitorear consultas LDAP sospechosas.
 
-### 3.2 NoPac Exploit (Abuso de Delegación)
-Este ataque permite a un usuario sin privilegios elevarse a administrador abusando de configuraciones débiles en delegación de Kerberos.
-
-```bash
-nxc ldap winterfell.north.sevenkingdoms.local -u jon.snow -p iknownothing -d north.sevenkingdoms.local -M maq
-```
-
-Si un usuario tiene permisos para crear máquinas en el dominio, puede explotar este acceso para escalar privilegios.
-
-**Defensa:**
-- Restringir permisos de delegación.
-- Auditar delegaciones de Kerberos en AD.
-
 ---
 
 ## 4. Ataques de Relaying y Hashes
