@@ -138,7 +138,7 @@ sudo responder -I <interfaz>
 ```
 
 Recibiremos un request parecido a esto:
-[[Imagenes/ObtainedHash.png]]
+![Hash Obtenido por Responder](Imagenes/ObtainedHash.png)
 
 Buscamos los hashes entre los logs de Responder y los movemos a la carpeta de WorkShop2025:
 ```bash
@@ -188,7 +188,7 @@ certipy find -u cersei.lannister -p 'il0vejaime' -dc-ip 192.168.46.10 -debug -vu
 
 Vemos que tenemos 1 template que permite la autenticacion de Kerberos:
 
-[[Imagenes/ESC1-Vulnerable.png]]
+![ESC1-Vulnerable](Imagenes/ESC1-Vulnerable.png)
 
 Ya que sabemos que existe un template vulnerable, podemos correr el siguiente comando:
 ```bash
