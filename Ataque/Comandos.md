@@ -48,7 +48,7 @@ Scan de nmap inicial:
 
 Enumeramos usuarios con:
 ```bash
-netexec smb 192.168.46.10-22 --users --continue-on-success
+netexec smb 192.168.46.10-22 --users
 ```
 
 Tambien se puede hacer con herramientas locales con:
