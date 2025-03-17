@@ -10,13 +10,6 @@ Antes de cualquier ataque, es crucial identificar los servicios expuestos en la 
 ```bash
 nmap -Pn -p- -sC -sV -oA full_scan_goad 192.168.56.10-12,22-23
 ```
-
-**Explicación:**
-- `-Pn`: Ignora la falta de respuesta de ping.
-- `-p-`: Escanea todos los puertos.
-- `-sC`: Usa scripts de reconocimiento por defecto.
-- `-sV`: Identifica versiones de servicios.
-
 Este paso ayuda a identificar servicios clave como SMB, LDAP y Kerberos.
 
 ### 1.2 Enumeración de Usuarios
