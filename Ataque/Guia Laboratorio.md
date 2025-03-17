@@ -138,7 +138,8 @@ sudo responder -I <interfaz>
 ```
 
 Recibiremos un request parecido a esto:
-![[ObtainedHash.png]]
+
+![Hashcat-Agarrado](./Imagenes/ObtainedHash.png)
 
 Si capturamos un hash NTLMv2, podemos tratar de crackearlos con:
 
