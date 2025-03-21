@@ -1,5 +1,7 @@
 ### Para conectarse a este laboratorio se requiere correr el comando:
+```bash
 ssh -o StrictHostKeyChecking=no -D 1080 -i ubuntu-jumpbox.pem goad@13.90.62.209
+```
 
 ### ubuntu-jumpbox.pem
 ```
