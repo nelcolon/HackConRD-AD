@@ -11,7 +11,7 @@
 
 The architecture is quite the same than the Azure deployment.
 
-![Architecture](../img/aws_schema.png)
+![Architecture](aws_schema.png)
 
 !!! Warning
     LLMNR, NBTNS and other poisoning network attacks will not work in aws environment.

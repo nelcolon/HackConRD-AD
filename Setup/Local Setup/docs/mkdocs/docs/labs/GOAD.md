@@ -2,7 +2,7 @@
 
 GOAD is the first and main lab of this project. It contains 3 domains and 2 forest.
 
-![GOAD overview](../img/GOAD_schema.png)
+![GOAD overview](HackConRD-AD/Setup/Local%20Setup/docs/mkdocs/docs/img/GOAD_schema.png)
 
 ## Servers
 
@@ -70,7 +70,7 @@ This lab is actually composed of five virtual machines:
 ## Users/Groups and associated scenarios
 
 - Graph of some scenarios is available here :
-![diagram-GOAD_compromission_Path_dark](./../img/diagram-GOAD_compromission_Path_dark.png)
+![diagram-GOAD_compromission_Path_dark](HackConRD-AD/Setup/Local%20Setup/docs/mkdocs/docs/img/diagram-GOAD_compromission_Path_dark.png)
 
 NORTH.SEVENKINGDOMS.LOCAL
 

@@ -8,12 +8,12 @@ The goad management script is now written in :simple-python: python to permit mo
     - :material-microsoft-windows: [Windows](windows.md)
 
 - Installation depend of the provider you use, please follow the appropriate guide :
-    - :simple-virtualbox: [Install with Virtualbox](../providers/virtualbox.md)
-    - :simple-vmware: [Install with VmWare](../providers/vmware.md)
-    - :simple-proxmox: [Install with Proxmox](../providers/proxmox.md)
-    - :material-microsoft-azure: [Install with Azure](../providers/azure.md)
-    - :simple-amazon: [Install with Aws](../providers/aws.md)
-    - 🏟️ [Install with Ludus](../providers/ludus.md)
+    - :simple-virtualbox: [Install with Virtualbox](virtualbox.md)
+    - :simple-vmware: [Install with VmWare](vmware.md)
+    - :simple-proxmox: [Install with Proxmox](proxmox.md)
+    - :material-microsoft-azure: [Install with Azure](azure.md)
+    - :simple-amazon: [Install with Aws](aws.md)
+    - 🏟️ [Install with Ludus](ludus.md)
 
 ## TLDR - quick install
 

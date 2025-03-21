@@ -10,7 +10,7 @@
   <img alt="icon_ansible" width="150"  height="150" src="./../img/icon_ansible.png">
 </div>
 
-![Architecture](../img/azure_architecture.png)
+![Architecture](HackConRD-AD/Setup/Local%20Setup/docs/mkdocs/docs/img/azure_architecture.png)
 
 !!! Warning
     LLMNR, NBTNS and other poisoning network attacks will not work in azure environment.

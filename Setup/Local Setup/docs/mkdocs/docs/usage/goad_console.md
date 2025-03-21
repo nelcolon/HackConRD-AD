@@ -2,7 +2,7 @@
 
 Launch goad interactive mode
 
-![console](./../img/console.png)
+![console](console.png)
 
 ## Enter interactive mode
 
@@ -39,7 +39,7 @@ Will check the lab dependencies
 check
 ```
 
-![cmd_check](../img/cmd_check.png)
+![cmd_check](cmd_check.png)
 
 ### install
 
@@ -56,7 +56,7 @@ install
     - provision jumpbox if provider is aws or azure
     - run the ansible provisioning 
 
-![cmd_install](../img/cmd_install.png)
+![cmd_install](cmd_install.png)
 
 ### create_empty
 
@@ -66,7 +66,7 @@ Create an empty instance folder (into the workspaces/ folder)
 create_empty
 ```
 
-![create_empty](../img/cmd_create_empty.png)
+![create_empty](cmd_create_empty.png)
 
 ### list
 
@@ -78,7 +78,7 @@ List instances
 list
 ```
 
-![list](../img/cmd_list.png)
+![list](cmd_list.png)
 
 ### load
 
@@ -90,7 +90,7 @@ Select an instance by his name
 load <instance name>
 ```
 
-![load](../img/cmd_load.png)
+![load](cmd_load.png)
 
 ### config
 
@@ -100,7 +100,7 @@ show current configuration
 config
 ```
 
-![config](../img/cmd_config.png)
+![config](cmd_config.png)
 
 ### labs
 
@@ -110,7 +110,7 @@ show available labs
 labs
 ```
 
-![cmd_labs.png](../img/cmd_labs.png)
+![cmd_labs.png](cmd_labs.png)
 
 
 ### set_lab
@@ -154,7 +154,7 @@ set_ip_range <ip_range>
 
 ## Instance selected
 
-![console](../img/console2.png)
+![console](console2.png)
 
 ```
 *** Manage Lab instance commands ***

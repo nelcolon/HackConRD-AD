@@ -1,6 +1,6 @@
 # NINJA HACKER ACADEMY
 
-![NHA](../img/logo_NHA.jpeg)
+![NHA](logo_NHA.jpeg)
 
 - NINJA HACKER ACADEMY (NHA) is written as a training challenge where GOAD was written as a lab with a maximum of vulns.
 - You should find your way in to get domain admin on the 2 domains (academy.ninja.lan and ninja.hack)

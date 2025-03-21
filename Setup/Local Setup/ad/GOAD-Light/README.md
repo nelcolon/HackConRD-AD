@@ -1,6 +1,6 @@
 # GOAD-Light
 
-![GOAD Light overview](../../docs/img/GOAD-Light_schema.png)
+![GOAD Light overview](HackConRD-AD/Setup/Local%20Setup/docs/img/GOAD-Light_schema.png)
 
 This is a light version of goad without the essos domain. This lab was build for computer with less performance.
 Missing scenarios:

@@ -2,7 +2,7 @@
 
 This is a light version of goad without the essos domain. This lab was build for computer with less performance (min ~20GB).
 
-![GOAD Light overview](../img/GOAD-Light_schema.png)
+![GOAD Light overview](HackConRD-AD/Setup/Local%20Setup/docs/mkdocs/docs/img/GOAD-Light_schema.png)
 
 Missing scenarios:
 

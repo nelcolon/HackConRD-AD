@@ -14,10 +14,9 @@ Técnicas utilizadas por atacantes una vez que han ingresado a la red corporativ
 ### 🚀 Explotación  
 Técnicas utilizadas para **movimiento lateral**, **escalada de privilegios** y **enumeración de AD**:  
 - **Enumeración con BloodHound** – Identificación de rutas de ataque dentro de AD.  
-- **ADCS ESC4** – Abuso de Microsoft Active Directory Certificate Services para obtener acceso privilegiado.  
+- **ADCS ESC1** – Abuso de Microsoft Active Directory Certificate Services para obtener acceso privilegiado.  
 - **Abuso de ACLs (Listas de Control de Acceso)**:  
   - **GenericWrite** – Modificación de atributos en objetos de AD para escalar privilegios.  
-  - **RBCD (Resource-Based Constrained Delegation)** – Abuso de delegación restringida para comprometer otras cuentas.  
   - **Shadow Credentials** – Inyección de credenciales en objetos de AD para persistencia y movimiento lateral.  
 
 ### 🎯 Post-Explotación  

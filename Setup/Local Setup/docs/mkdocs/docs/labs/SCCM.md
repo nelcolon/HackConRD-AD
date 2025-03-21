@@ -3,7 +3,7 @@
 !!! success "Thanks!"
     Thanks a lot to my colleague Issam (@KenjiEndo15), who start the project and provide me a lot of ansible roles to start from !
 
-![SCCM overview](../img/SCCMLAB_overview.png)
+![SCCM overview](HackConRD-AD/Setup/Local%20Setup/docs/mkdocs/docs/img/SCCMLAB_overview.png)
 
 ## Servers
 4 virtual machines with Windows Server 2019
