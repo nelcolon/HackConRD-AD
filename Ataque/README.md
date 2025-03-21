@@ -6,13 +6,13 @@ Este directorio contiene la información de ataque para el workshop de "Ataque y
 
 Identificando los controladores de dominio:
 ```shell
-nslookup -type=srv _ldap._tcp.dc._msdcs.sevenkingdoms.local 10.4.10.10
+nslookup -type=srv _ldap._tcp.dc._msdcs.sevenkingdoms.local 192.168.56.10
 _ldap._tcp.dc._msdcs.sevenkingdoms.local        service = 0 100 389 kingslanding.sevenkingdoms.local
 
-nslookup -type=srv _ldap._tcp.dc._msdcs.north.sevenkingdoms.local 10.4.10.10
+nslookup -type=srv _ldap._tcp.dc._msdcs.north.sevenkingdoms.local 192.168.56.10
 _ldap._tcp.dc._msdcs.north.sevenkingdoms.local  service = 0 100 389 winterfell.north.sevenkingdoms.local
 
-nslookup -type=srv _ldap._tcp.dc._msdcs.essos.local 10.4.10.10
+nslookup -type=srv _ldap._tcp.dc._msdcs.essos.local 192.168.56.10
 _ldap._tcp.dc._msdcs.essos.local        service = 0 100 389 meereen.essos.local
 
 ```
@@ -20,18 +20,18 @@ _ldap._tcp.dc._msdcs.essos.local        service = 0 100 389 meereen.essos.local
 Por temas de kerberos, ponemos esta información en el `/etc/hosts`
 ```
 # GOAD
-10.4.10.10   sevenkingdoms.local kingslanding.sevenkingdoms.local kingslanding
-10.4.10.11   winterfell.north.sevenkingdoms.local north.sevenkingdoms.local winterfell
-10.4.10.12   essos.local meereen.essos.local meereen
-10.4.10.22   castelblack.north.sevenkingdoms.local castelblack
-10.4.10.23   braavos.essos.local braavos
+192.168.56.10   sevenkingdoms.local kingslanding.sevenkingdoms.local kingslanding
+192.168.56.11   winterfell.north.sevenkingdoms.local north.sevenkingdoms.local winterfell
+192.168.56.12   essos.local meereen.essos.local meereen
+192.168.56.22   castelblack.north.sevenkingdoms.local castelblack
+192.168.56.23   braavos.essos.local braavos
 ```
 
 Para que Linux soporte kerberos instalamos el paquete `krb5-user` y luego deditamos `/etc/krb5.conf`
 
 ```conf
 [libdefaults]
-  default_realm = essos.local
+  default_realm = sevenkingdoms.local
   kdc_timesync = 1
   ccache_type = 4
   forwardable = true
@@ -57,7 +57,7 @@ Para que Linux soporte kerberos instalamos el paquete `krb5-user` y luego dedita
 
 - Kerberoasting
 
-> En caso de tener el problema `KRB_AP_ERR_SKEW(Clock skew too great)`, esto se resuelve con `rdate -n 10.4.10.11`
+> En caso de tener el problema `KRB_AP_ERR_SKEW(Clock skew too great)`, esto se resuelve con `rdate -n 192.168.56.11`
 
 - SMB Relay
 

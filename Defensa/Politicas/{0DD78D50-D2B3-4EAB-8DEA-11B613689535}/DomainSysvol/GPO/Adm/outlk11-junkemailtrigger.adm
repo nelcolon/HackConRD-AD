@@ -1,0 +1,41 @@
+CLASS USER
+
+CATEGORY "Microsoft Office Outlook 2003"
+
+CATEGORY "Tools | Options..."
+
+CATEGORY "Preferences"
+
+CATEGORY "E-mail options"
+END CATEGORY
+CATEGORY "Calendar options"
+END CATEGORY
+CATEGORY "Contact options"
+END CATEGORY
+CATEGORY "Journal options"
+END CATEGORY
+CATEGORY "Notes options"
+END CATEGORY
+
+CATEGORY "Junk E-mail"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+POLICY !!L_JunkMailImportList
+			VALUENAME JunkMailImportLists
+			VALUEON NUMERIC 1 
+			VALUEOFF NUMERIC 0
+	EXPLAIN !!L_JunkMailImportListExplain
+	END POLICY
+
+END CATEGORY
+
+END CATEGORY
+
+END CATEGORY
+END CATEGORY
+
+
+[Strings]
+
+L_JunkMailImportList="Trigger to apply junk email lists"
+
+L_JunkMailImportListExplain="This policy setting determines whether or not Outlook applies the junk email policy settings you may have configured for the following junk email lists:\n \n Safe Senders\n Safe Recipients\n Blocked Senders\n \nFor example, if you configure the policy to import a Safe Senders list, Outlook does not import this list unless you also have the trigger policy enabled.\n \nEnabling this policy configures the following registry data:\n \n Key; HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail\n \n DWORD: JunkMailImportLists\n \n Value: 1\n \nNOTE: With this policy enabled, Outlook will apply any configured junk email policy list settings each time your start the program. This means, for example, if a user manually removes an entry from the Safe Senders list that was added by group policy, the next time Outlook is started, this entry will be placed back in the Safe Senders list.\n \nIf you want to stop the application of junk email group policy list settings, change this policy to either Not Configured or Disabled."

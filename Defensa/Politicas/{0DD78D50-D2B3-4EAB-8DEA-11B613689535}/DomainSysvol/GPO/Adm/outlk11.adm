@@ -1,0 +1,3006 @@
+CLASS USER
+
+CATEGORY "Microsoft Office Outlook 2003"
+CATEGORY "Tools | Options..."
+CATEGORY "Preferences"
+CATEGORY "E-mail options"
+POLICY "Message handling"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "After moving or deleting an open item:" DROPDOWNLIST
+				VALUENAME AfterMove
+	ITEMLIST
+					NAME "Open the next item" VALUE NUMERIC 0 
+					NAME "Return to the Inbox" VALUE NUMERIC 1 
+					NAME "Open the previous item" VALUE NUMERIC 2 DEFAULT
+	END ITEMLIST
+				NOSORT
+	END PART
+	PART "Close original message when reply or forward" CHECKBOX
+				VALUENAME CloseOrig
+				VALUEON NUMERIC 1 
+				VALUEOFF NUMERIC 0 
+	END PART
+	PART "Save copies of messages in Sent Items folder" CHECKBOX
+				VALUENAME SaveSent
+				VALUEON NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	PART "Display a notification message when new mail arrives" CHECKBOX
+				VALUENAME Notification
+				VALUEON NUMERIC 1 
+				VALUEOFF NUMERIC 0 
+	END PART
+	PART "Autosave unsent every xx minutes (0=No AutoSave):" NUMERIC
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Common\MailSettings
+				VALUENAME AutosaveTime  
+				SPIN 1
+				#if VERSION == 1
+					SPIN 0
+				#endif
+				DEFAULT 3
+				MIN 0
+				MAX 99
+	END PART
+	PART "Automatically clean up plain text messages" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+				VALUENAME AutoFormatPlainText
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Read email as plain text"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Read email as plain text" CHECKBOX
+				VALUENAME ReadAsPlain
+				VALUEON NUMERIC 1 
+				VALUEOFF NUMERIC 0  				
+	END PART
+	END POLICY
+POLICY "Read signed email as plain text"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Read signed email as plain text" CHECKBOX
+				VALUENAME ReadSignedAsPlain
+				VALUEON NUMERIC 1 
+				VALUEOFF NUMERIC 0  				
+	END PART
+	END POLICY
+CATEGORY "Advanced E-mail options"
+CATEGORY "Desktop Alert"
+POLICY "New Mail Desktop Alert"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Check to disable New Mail Desktop Alert; Uncheck to enable" CHECKBOX
+			VALUENAME NewmailDesktopAlerts
+			VALUEON NUMERIC 0
+			VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Specify duration of fade in (in millisec)"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\DesktopAlerts
+	PART "Millisec:" NUMERIC
+			VALUENAME TimeIn			
+			SPIN 1
+			DEFAULT 1000
+			MIN 0
+			MAX 25000
+	END PART
+	END POLICY
+POLICY "Specify duration of Desktop Alert before fade (in millisec)"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\DesktopAlerts
+	PART "Millisec (Default 4000):" NUMERIC
+			VALUENAME TimeOn	
+			MAX 1000000000
+			DEFAULT 4000		
+	END PART
+	END POLICY
+POLICY "Specify duration of Desktop Alert on mouse over (in millisec)"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\DesktopAlerts
+	PART "Millisec:" NUMERIC
+			VALUENAME TimeFocus			
+			SPIN 1
+			DEFAULT 60000
+			MIN 0
+			MAX 250000
+	END PART
+	END POLICY
+POLICY "Specify duration of fade out (in millisec)"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\DesktopAlerts
+	PART "Millisec:" NUMERIC
+			VALUENAME TimeOut			
+			SPIN 1
+			DEFAULT 2000
+			MIN 0
+			MAX 25000
+	END PART
+	END POLICY
+POLICY "Specify opacity of Desktop Alert"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\DesktopAlerts
+	PART "Opacity (Alpha Level):" NUMERIC
+			VALUENAME Opacity			
+			SPIN 1
+			DEFAULT 51
+			MIN 0
+			MAX 255
+	END PART
+	END POLICY
+POLICY "Specify opacity at start of fade in"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\DesktopAlerts
+	PART "Specify opacity at start of fade in:" NUMERIC
+			VALUENAME FirstOpacity			
+			SPIN 1
+			DEFAULT 0
+			MIN 0
+			MAX 255
+	END PART
+	END POLICY
+POLICY "Specify default location of Desktop Alert"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\DesktopAlerts
+	PART "Corner (0-3)" NUMERIC
+				VALUENAME Corner
+				SPIN 1
+				DEFAULT 3
+				MIN 0
+				MAX 3
+	END PART
+	PART "XOffset (default 44):" NUMERIC
+				VALUENAME XOffset
+	END PART
+	PART "YOffset (default 42):" NUMERIC
+				VALUENAME YOffset
+	END PART
+	PART "Corner corresponds to what quadrant of the screen the " TEXT
+	END PART
+	PART "notification should display in." TEXT
+	END PART
+	PART "0  |  1" TEXT
+	END PART
+	PART "---------" TEXT
+	END PART
+	PART "2  |  3" TEXT
+	END PART
+	PART "XOffset represents the horizontal distance from the selected corner." TEXT
+	END PART
+	PART "YOffset represents the vertical distance from the selected corner." TEXT
+	END PART
+	END POLICY
+END CATEGORY
+POLICY "Save Messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+	PART "Save unsent items in this folder:" DROPDOWNLIST
+					VALUENAME SAVE_LOC  
+	ITEMLIST
+						NAME "Outbox" 		VALUE NUMERIC 4
+						NAME "Sent Items" 	VALUE NUMERIC 5
+						NAME "Inbox" 		VALUE NUMERIC 6
+						NAME "Drafts" 		VALUE NUMERIC 16 DEFAULT
+	END ITEMLIST
+					NOSORT
+	END PART
+	END POLICY
+POLICY "More save messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "In folders other than the Inbox, save replies with original message" CHECKBOX
+					VALUENAME SaveReplies
+					VALUEON NUMERIC 1 
+					VALUEOFF NUMERIC 0
+	END PART
+	PART "Save forwarded messages" CHECKBOX
+					VALUENAME SaveFW
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+POLICY "When new items arrive"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Play a sound" CHECKBOX
+					VALUENAME PlaySound
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0
+	END PART
+	PART "Briefly change the mouse cursor" CHECKBOX
+					VALUENAME ChangePointer
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0
+	END PART
+	PART "Show an envelope icon in the system tray" CHECKBOX
+					VALUENAME ShowEnvelope
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "When sending a message"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Set importance:" DROPDOWNLIST
+					VALUENAME Importance
+	ITEMLIST
+						NAME "High"	VALUE NUMERIC 2
+						NAME "Normal"	VALUE NUMERIC 1 DEFAULT
+						NAME "Low"	VALUE NUMERIC 0
+	END ITEMLIST
+					NOSORT
+	END PART
+	PART "Set sensitivity:" DROPDOWNLIST
+					VALUENAME Sensitivity  
+	ITEMLIST
+						NAME "Normal"		VALUE NUMERIC 0 DEFAULT
+						NAME "Personal"		VALUE NUMERIC 1
+						NAME "Private"		VALUE NUMERIC 2 
+						NAME "Confidential"	VALUE NUMERIC 3 
+	END ITEMLIST
+					NOSORT
+	END PART
+	PART "Messages expire after (days):" NUMERIC
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+					VALUENAME NumDaysExpire
+					SPIN 0
+					DEFAULT 0
+					MIN 0
+					MAX 3652
+	END PART
+	PART "Allow commas as address separator" CHECKBOX
+					VALUENAME AllowCommasInRecip
+					VALUEON NUMERIC 1 
+					VALUEOFF NUMERIC 0
+	END PART
+	PART "Automatic name checking" CHECKBOX
+					VALUENAME AutoNameCheck
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0 
+	END PART
+	PART "Delete meeting request from Inbox when responding" CHECKBOX
+					VALUENAME DeleteWhenRespond
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0 
+	END PART
+	PART "Suggest names while completing To, Cc, and Bcc fields" CHECKBOX
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+					VALUENAME ShowAutoSug
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0 
+	END PART
+	PART "Add properties to attachments to enable Reply with Changes" CHECKBOX
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+					VALUENAME AdHocReviewBehavior
+					VALUEON NUMERIC 0 DEFCHECKED ;reverse
+					VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Tracking options"
+POLICY "Options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+	PART "Process requests and responses on arrival" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+					VALUENAME AutoProcReq
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0 
+	END PART
+	PART "Process receipts on arrival" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+					VALUENAME AutoProcRcpts
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0 
+	END PART
+	PART "Delete blank voting and meeting responses after processing" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+					VALUENAME AutoDelRcpts
+					VALUEON NUMERIC 1
+					VALUEOFF NUMERIC 0 
+	END PART
+	PART "Request a read receipt for all messages a user sends" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+					VALUENAME ReadReceipt
+					VALUEON NUMERIC 1 
+					VALUEOFF NUMERIC 0 
+	END PART
+	PART "Request delivery rcpt for all msgs a user sends (Exchange only)" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+					VALUENAME DeliveryReceipt
+					VALUEON NUMERIC 1 
+					VALUEOFF NUMERIC 0 
+	END PART
+	PART "When Outlook is asked to respond to a read receipt request:" DROPDOWNLIST
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+					VALUENAME "Receipt Response"
+	ITEMLIST
+						NAME "Always send a response"		VALUE NUMERIC 0
+						NAME "Never send a response"		VALUE NUMERIC 1
+						NAME "Ask before sending a response"		VALUE NUMERIC 2 DEFAULT
+	END ITEMLIST
+					NOSORT
+	END PART
+	END POLICY
+END CATEGORY
+POLICY "On replies and forwards"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "When replying to a message:" DROPDOWNLIST
+				VALUENAME ReplyStyle
+	ITEMLIST
+					NAME "Do not include orginal message"		VALUE NUMERIC 0 
+					NAME "Attach orginal message"			VALUE NUMERIC 1 
+					NAME "Include original message text"		VALUE NUMERIC 2 
+					NAME "Include and indent org. message text"		VALUE NUMERIC 3 DEFAULT
+					NAME "Prefix each line of the org. message"		VALUE NUMERIC 1000
+	END ITEMLIST
+				NOSORT
+	END PART
+	PART "When forwarding a message:" DROPDOWNLIST
+				VALUENAME ForwardStyle  
+	ITEMLIST
+					NAME "Attach orginal message"		VALUE NUMERIC 1 
+					NAME "Include original message text"		VALUE NUMERIC 2 DEFAULT
+					NAME "Include and indent org. message text"		VALUE NUMERIC 3 
+					NAME "Prefix each line of the org. message"		VALUE NUMERIC 1000
+	END ITEMLIST
+				NOSORT
+	END PART
+	PART "Prefix each line with:" EDITTEXT
+				VALUENAME PrefixText  
+				DEFAULT  ">"  
+	END PART
+	PART "Allow user's comments to be marked" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\Common\mailsettings
+				VALUENAME MarkComments
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Calendar options"
+POLICY "Reminders on Calendar items"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Calendar items have reminders" CHECKBOX
+				VALUENAME ApptReminders
+				VALUEON NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Calendar item defaults"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Show reminders <x> minutes before the event starts:" NUMERIC
+				VALUENAME RemindDefault
+				SPIN 10
+				#if VERSION == 1
+					SPIN 0
+				#endif
+				DEFAULT 15
+				MIN 0
+				MAX 2880
+	END PART
+	END POLICY
+POLICY "Work week"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Length of work week:" DROPDOWNLIST
+				VALUENAME Workday
+	ITEMLIST
+					NAME	"Monday to Friday"		VALUE NUMERIC 124 DEFAULT
+					NAME	"Monday to Thursday"		VALUE	NUMERIC 120
+					NAME	"Tuesday to Friday"		VALUE	NUMERIC 60
+					NAME	"Monday to Saturday" 		VALUE	NUMERIC 126
+					NAME	"Wednesday to Saturday" 		VALUE	NUMERIC 30 
+					NAME	"Thursday to Sunday" 		VALUE	NUMERIC 142
+					NAME	"Sunday to Friday" 		VALUE	NUMERIC 252
+					NAME	"All seven days" 	VALUE	NUMERIC 254
+	END ITEMLIST
+				#if VERSION > 1
+					NOSORT
+				#endif
+	END PART
+	END POLICY
+POLICY "First day of the week"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Choose the first day of the week:" DROPDOWNLIST
+				VALUENAME FirstDOW
+	ITEMLIST
+					NAME	"Sunday"	VALUE NUMERIC 0 DEFAULT
+					NAME	"Monday"	VALUE	NUMERIC 1
+					NAME	"Tuesday"	VALUE	NUMERIC 2
+					NAME	"Wednesday"	VALUE	NUMERIC 3
+					NAME	"Thursday"	VALUE	NUMERIC 4
+					NAME	"Friday"	VALUE	NUMERIC 5
+					NAME	"Saturday"	VALUE	NUMERIC 6
+	END ITEMLIST
+				#if VERSION > 1
+					NOSORT
+				#endif
+	END PART
+	END POLICY
+POLICY "First week of year"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Choose the first week of the year:" DROPDOWNLIST
+				VALUENAME FirstWOY
+	ITEMLIST
+					NAME	"Starts on Jan. 1"	VALUE	NUMERIC 0 DEFAULT
+					NAME	"First full week"	VALUE NUMERIC 2
+					NAME	"First four-day week"	VALUE	NUMERIC 1
+	END ITEMLIST
+				#if VERSION > 1
+					NOSORT
+				#endif
+	END PART
+	END POLICY
+POLICY "Working hours"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Start time:" DROPDOWNLIST
+				VALUENAME CalDefStart
+	ITEMLIST
+					NAME	"8:00 AM"	VALUE NUMERIC 480 DEFAULT
+					NAME	"12:00 AM"	VALUE NUMERIC 0
+					NAME	"12:30 AM"	VALUE NUMERIC 30
+					NAME	"1:00 AM"	VALUE NUMERIC 60
+					NAME	"1:30 AM"	VALUE NUMERIC 90
+					NAME	"2:00 AM"	VALUE NUMERIC 120
+					NAME	"2:30 AM"	VALUE NUMERIC 150
+					NAME	"3:00 AM"	VALUE NUMERIC 180
+					NAME	"3:30 AM"	VALUE NUMERIC 210
+					NAME	"4:00 AM"	VALUE NUMERIC 240
+					NAME	"4:30 AM"	VALUE NUMERIC 270
+					NAME	"5:00 AM"	VALUE NUMERIC 300
+					NAME	"5:30 AM"	VALUE NUMERIC 330
+					NAME	"6:00 AM"	VALUE NUMERIC 360
+					NAME	"6:30 AM"	VALUE NUMERIC 390
+					NAME	"7:00 AM"	VALUE NUMERIC 420
+					NAME	"7:30 AM"	VALUE NUMERIC 450
+					NAME	"8:00 AM"	VALUE NUMERIC 480 
+					NAME	"8:30 AM"	VALUE NUMERIC 510
+					NAME	"9:00 AM"	VALUE NUMERIC 540
+					NAME	"9:30 AM"	VALUE NUMERIC 570
+					NAME	"10:00 AM"	VALUE NUMERIC 600
+					NAME	"10:30 AM"	VALUE NUMERIC 630
+					NAME	"11:00 AM"	VALUE NUMERIC 660
+					NAME	"11:30 AM"	VALUE NUMERIC 690
+					NAME	"12:00 PM"	VALUE NUMERIC 720
+					NAME	"12:30 PM"	VALUE NUMERIC 750
+					NAME	"1:00 PM"	VALUE NUMERIC 780
+					NAME	"1:30 PM"	VALUE NUMERIC 810
+					NAME	"2:00 PM"	VALUE NUMERIC 840
+					NAME	"2:30 PM"	VALUE NUMERIC 870
+					NAME	"3:00 PM"	VALUE NUMERIC 900
+					NAME	"3:30 PM"	VALUE NUMERIC 930
+					NAME	"4:00 PM"	VALUE NUMERIC 960
+					NAME	"4:30 PM"	VALUE NUMERIC 990
+					NAME	"5:00 PM"	VALUE NUMERIC 1020
+					NAME	"5:30 PM"	VALUE NUMERIC 1050
+					NAME	"6:00 PM"	VALUE NUMERIC 1080
+					NAME	"6:30 PM"	VALUE NUMERIC 1110
+					NAME	"7:00 PM"	VALUE NUMERIC 1140
+					NAME	"7:30 PM"	VALUE NUMERIC 1170
+					NAME	"8:00 PM"	VALUE NUMERIC 1200
+					NAME	"8:30 PM"	VALUE NUMERIC 1230
+					NAME	"9:00 PM"	VALUE NUMERIC 1260
+					NAME	"9:30 PM"	VALUE NUMERIC 1290
+					NAME	"10:00 PM"	VALUE NUMERIC 1320
+					NAME	"10:30 PM"	VALUE NUMERIC 1350
+					NAME	"11:00 PM"	VALUE NUMERIC 1380
+					NAME	"11:30 PM"	VALUE NUMERIC 1410
+	END ITEMLIST
+				#if VERSION > 1
+					NOSORT
+				#endif
+	END PART
+	PART "End Time:" DROPDOWNLIST
+				VALUENAME CalDefEnd
+	ITEMLIST
+					NAME	"5:00 PM"	VALUE NUMERIC 1020 DEFAULT
+					NAME	"12:00 AM"	VALUE NUMERIC 0
+					NAME	"12:30 AM"	VALUE NUMERIC 30
+					NAME	"1:00 AM"	VALUE NUMERIC 60
+					NAME	"1:30 AM"	VALUE NUMERIC 90
+					NAME	"2:00 AM"	VALUE NUMERIC 120
+					NAME	"2:30 AM"	VALUE NUMERIC 150
+					NAME	"3:00 AM"	VALUE NUMERIC 180
+					NAME	"3:30 AM"	VALUE NUMERIC 210
+					NAME	"4:00 AM"	VALUE NUMERIC 240
+					NAME	"4:30 AM"	VALUE NUMERIC 270
+					NAME	"5:00 AM"	VALUE NUMERIC 300
+					NAME	"5:30 AM"	VALUE NUMERIC 330
+					NAME	"6:00 AM"	VALUE NUMERIC 360
+					NAME	"6:30 AM"	VALUE NUMERIC 390
+					NAME	"7:00 AM"	VALUE NUMERIC 420
+					NAME	"7:30 AM"	VALUE NUMERIC 450
+					NAME	"8:00 AM"	VALUE NUMERIC 480 
+					NAME	"8:30 AM"	VALUE NUMERIC 510
+					NAME	"9:00 AM"	VALUE NUMERIC 540
+					NAME	"9:30 AM"	VALUE NUMERIC 570
+					NAME	"10:00 AM"	VALUE NUMERIC 600
+					NAME	"10:30 AM"	VALUE NUMERIC 630
+					NAME	"11:00 AM"	VALUE NUMERIC 660
+					NAME	"11:30 AM"	VALUE NUMERIC 690
+					NAME	"12:00 PM"	VALUE NUMERIC 720
+					NAME	"12:30 PM"	VALUE NUMERIC 750
+					NAME	"1:00 PM"	VALUE NUMERIC 780
+					NAME	"1:30 PM"	VALUE NUMERIC 810
+					NAME	"2:00 PM"	VALUE NUMERIC 840
+					NAME	"2:30 PM"	VALUE NUMERIC 870
+					NAME	"3:00 PM"	VALUE NUMERIC 900
+					NAME	"3:30 PM"	VALUE NUMERIC 930
+					NAME	"4:00 PM"	VALUE NUMERIC 960
+					NAME	"4:30 PM"	VALUE NUMERIC 990
+					NAME	"5:00 PM"	VALUE NUMERIC 1020
+					NAME	"5:30 PM"	VALUE NUMERIC 1050
+					NAME	"6:00 PM"	VALUE NUMERIC 1080
+					NAME	"6:30 PM"	VALUE NUMERIC 1110
+					NAME	"7:00 PM"	VALUE NUMERIC 1140
+					NAME	"7:30 PM"	VALUE NUMERIC 1170
+					NAME	"8:00 PM"	VALUE NUMERIC 1200
+					NAME	"8:30 PM"	VALUE NUMERIC 1230
+					NAME	"9:00 PM"	VALUE NUMERIC 1260
+					NAME	"9:30 PM"	VALUE NUMERIC 1290
+					NAME	"10:00 PM"	VALUE NUMERIC 1320
+					NAME	"10:30 PM"	VALUE NUMERIC 1350
+					NAME	"11:00 PM"	VALUE NUMERIC 1380
+					NAME	"11:30 PM"	VALUE NUMERIC 1410
+	END ITEMLIST
+				#if VERSION > 1
+					NOSORT
+				#endif
+	END PART
+	END POLICY
+POLICY "Calendar week numbers"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Display week numbers in Calendar" CHECKBOX
+				VALUENAME WeekNum
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Meeting Requests using iCalendar"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Send meeting requests using iCalendar by default" CHECKBOX
+				VALUENAME SendMtgAsICAL
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Allow attendees to propose new times for meetings you organize"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Allow attendees to propose new times for meetings you organize" CHECKBOX
+				VALUENAME AllowPropose
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Use this response when you propose new meeting times"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Use this response when you propose new meeting times" DROPDOWNLIST
+				VALUENAME "Propose Response Type"
+	ITEMLIST
+					NAME "Tentative"	VALUE NUMERIC 2 
+					NAME "Accept"		VALUE NUMERIC 3 DEFAULT
+					NAME "Decline"		VALUE NUMERIC 4
+	END ITEMLIST
+				NOSORT
+	END PART
+	END POLICY
+POLICY "Secondary calendar settings"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Use secondary calendar" CHECKBOX
+				VALUENAME "Show BothCal"
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	PART "Set secondary calendar language:" DROPDOWNLIST
+				VALUENAME "Alter Calendar Lang"
+	ITEMLIST
+				NAME "Chinese Lunar (Simplified Chinese)" VALUE NUMERIC 2052
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 15
+					END ACTIONLIST
+				NAME "Chinese Lunar (Traditional Chinese)" VALUE NUMERIC 1028
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 15
+					END ACTIONLIST
+				NAME "Gregorian (Arabic)" VALUE NUMERIC 1025
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 10
+					END ACTIONLIST
+				NAME "Gregorian (Transliterated English)" VALUE NUMERIC 1025
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 11
+					END ACTIONLIST
+				NAME "Gregorian (Transliterated French)" VALUE NUMERIC 1025
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 12
+					END ACTIONLIST
+				NAME "Hebrew Lunar (English)" VALUE NUMERIC 1033
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 8
+					END ACTIONLIST
+				NAME "Hebrew Lunar (Hebrew)" VALUE NUMERIC 1037
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 8
+					END ACTIONLIST
+				NAME "Hijri (Arabic)" VALUE NUMERIC 1025
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 6
+					END ACTIONLIST
+				NAME "Hijri (English)" VALUE NUMERIC 1033
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 6
+					END ACTIONLIST
+				NAME "Japanese Lunar (Japanese)" VALUE NUMERIC 1041
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 14
+					END ACTIONLIST
+				NAME "Korean Lunar (Korean)" VALUE NUMERIC 1042
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 14
+					END ACTIONLIST
+				NAME "Rokuyou (Japanese)" VALUE NUMERIC 1041
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 19
+					END ACTIONLIST
+				NAME "Zodiac (Japanese)" VALUE NUMERIC 1041
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 18
+					END ACTIONLIST
+				NAME "Zodiac (Korean)" VALUE NUMERIC 1042
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 18
+					END ACTIONLIST
+				NAME "Zodiac (Simplified Chinese)" VALUE NUMERIC 2052
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 17
+					END ACTIONLIST
+				NAME "Zodiac (Traditional Chinese)" VALUE NUMERIC 1028
+					ACTIONLIST
+					VALUENAME "Alter Calendar Type" VALUE NUMERIC 17
+					END ACTIONLIST
+	END ITEMLIST
+				NOSORT
+	END PART
+	END POLICY
+POLICY "Hide lucky days when using Rokuyou (Japanese) calendar"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME LunarRokuyou
+			VALUEON NUMERIC 0	
+			VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+CATEGORY "Planner Options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+POLICY "Meeting Planner"
+	PART "Show popup calendar details" CHECKBOX
+			VALUENAME "MeetMode Show popup details"
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Show calendar details in the grid" CHECKBOX
+			VALUENAME "MeetMode Show details in grid"
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Group Calendar"
+	PART "Show popup calendar details" CHECKBOX
+			VALUENAME "GroupCalMode Show popup details"
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Show calendar details in the grid" CHECKBOX
+			VALUENAME "GroupCalMode Show details in grid"
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Free/Busy Options"
+POLICY "Disable the Microsoft Office Internet Free/Busy Service"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar\Internet Free/Busy"
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+				VALUENAME NoService
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Months of Free/Busy information published:" NUMERIC
+					VALUENAME FBPublishRange
+					SPIN 1
+					#if VERSION == 1
+						SPIN 0
+					#endif
+					DEFAULT 2
+					MIN 0
+					MAX 12
+	END PART
+	PART "Prevent users from changing Months of Free/Busy information" CHECKBOX
+					KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar\Internet Free/Busy"
+					VALUENAME "Lock FB Range"
+					VALUEON NUMERIC 1
+					VALUEOFF NUMERIC 0
+	END PART
+	PART "being published" TEXT
+	END PART
+	PART " " TEXT
+	END PART
+	PART "Free/Busy updated on the server every xxx seconds:" NUMERIC
+					VALUENAME FBUpdateSecs
+					SPIN 10
+					#if VERSION == 1
+						SPIN 0
+					#endif
+					DEFAULT 900
+					MIN 0
+					MAX 86400
+	END PART
+	END POLICY
+POLICY "Internet Free/Busy Options"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar\Internet Free/Busy"
+	PART "Publish free/busy information" CHECKBOX
+					VALUENAME "Publish to Internet"
+					VALUEON NUMERIC 1
+					VALUEOFF NUMERIC 0
+	END PART
+	PART "Publish at this URL:" EDITTEXT
+					VALUENAME "Write URL"
+	END PART
+	PART "Search at this URL:" EDITTEXT
+					VALUENAME "Read URL"
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Contact options"
+POLICY "Select the default setting for how to file new contacts"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Contact
+	PART "Default Full Name order:" DROPDOWNLIST
+				VALUENAME NameParserStyle
+	ITEMLIST
+					NAME "First (Middle) Last"	VALUE "E" DEFAULT
+					NAME "Last First"			VALUE "H"
+					NAME "First Last1 Last2"	VALUE "S"
+	END ITEMLIST
+				NOSORT
+	END PART
+	PART "Default File As order:" DROPDOWNLIST
+				VALUENAME FileAsOrder
+	ITEMLIST
+					NAME "Last, First" 		VALUE NUMERIC 32791 DEFAULT
+					NAME "First Last" 		VALUE NUMERIC 32823
+					NAME "Company" 			VALUE NUMERIC 14870
+					NAME "Last, First (Company)" 	VALUE NUMERIC 32793
+					NAME "Company (Last, First)"	VALUE NUMERIC 32792
+	END ITEMLIST
+				NOSORT
+	END PART
+	PART "Check for duplicate contacts" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Contact
+				VALUENAME ConfirmDuplicates
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	PART "Show an additional Contacts Index" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Contact
+				VALUENAME IndexTabsOn
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	PART "Additional Contacts Index:" DROPDOWNLIST
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Contact
+				VALUENAME IndexTabsScript
+	ITEMLIST
+					NAME "Arabic" VALUE NUMERIC 2 DEFAULT
+					NAME "Cyrillic" VALUE NUMERIC 7
+					NAME "Greek" VALUE NUMERIC 15
+					NAME "Hebrew" VALUE NUMERIC 16
+					NAME "Thai" VALUE NUMERIC 28
+					NAME "Vietnamese" VALUE NUMERIC 30
+	END ITEMLIST
+				NOSORT
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Journal options"
+POLICY "Disable journaling of these Outlook items"
+KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling"
+	PART "E-mail Message" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\E-mail Message"			
+				VALUENAME AutoJournaled
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1 
+	END PART
+	PART "Meeting cancellation" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Meeting Cancellation"			
+				VALUENAME AutoJournaled
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1 
+	END PART
+	PART "Meeting request" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Meeting Request"			
+				VALUENAME AutoJournaled
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1
+	END PART
+	PART "Meeting response" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Meeting Response"			
+				VALUENAME AutoJournaled
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1
+	END PART
+	PART "Task request" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Task Request"			
+				VALUENAME AutoJournaled
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1
+	END PART
+	PART "Task response" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Task Response"			
+				VALUENAME AutoJournaled
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Automatically journal these items"
+KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling"
+	PART "E-mail Message" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\E-mail Message"			
+				VALUENAME Enabled
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0 
+	ACTIONLISTON
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Journal
+					VALUENAME EnableJournal VALUE NUMERIC 1
+	END ACTIONLISTON
+	END PART
+	PART "Meeting cancellation" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Meeting Cancellation"			
+				VALUENAME Enabled
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0 
+	ACTIONLISTON
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Journal
+					VALUENAME EnableJournal VALUE NUMERIC 1
+	END ACTIONLISTON
+	END PART
+	PART "Meeting request" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Meeting Request"			
+				VALUENAME Enabled
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	ACTIONLISTON
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Journal
+					VALUENAME EnableJournal VALUE NUMERIC 1
+	END ACTIONLISTON
+	END PART
+	PART "Meeting response" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Meeting Response"			
+				VALUENAME Enabled
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	ACTIONLISTON
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Journal
+					VALUENAME EnableJournal VALUE NUMERIC 1
+	END ACTIONLISTON
+	END PART
+	PART "Task request" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Task Request"			
+				VALUENAME Enabled
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	ACTIONLISTON
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Journal
+					VALUENAME EnableJournal VALUE NUMERIC 1
+	END ACTIONLISTON
+	END PART
+	PART "Task response" CHECKBOX
+				KEYNAME "Software\Policies\Microsoft\Shared Tools\Outlook\Journaling\Task Response"			
+				VALUENAME Enabled
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	ACTIONLISTON
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Journal
+					VALUENAME EnableJournal VALUE NUMERIC 1
+	END ACTIONLISTON
+	END PART
+	END POLICY
+POLICY "Journal entry options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Journal
+	PART "Double-clicking a journal entry:" DROPDOWNLIST
+				VALUENAME "Journal Open Assoc Item"
+	ITEMLIST
+					NAME "Opens the journal entry" VALUE NUMERIC 0 DEFAULT
+					NAME "Opens the associated item" VALUE	NUMERIC 1
+	END ITEMLIST
+				REQUIRED
+				#if VERSION > 1
+					NOSORT
+				#endif
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Notes options"
+POLICY "Notes appearance"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Note
+	PART "Color:" DROPDOWNLIST
+				VALUENAME NoteColor
+	ITEMLIST
+					NAME "Yellow"	VALUE NUMERIC 3 DEFAULT
+					NAME "Blue"	VALUE NUMERIC 0
+					NAME "Green"	VALUE NUMERIC 1
+					NAME "Pink"	VALUE NUMERIC 2
+					NAME "White"	VALUE NUMERIC 4
+	END ITEMLIST
+				REQUIRED
+				#if VERSION > 1
+					NOSORT
+				#endif
+	END PART
+	PART "Size:" DROPDOWNLIST
+				VALUENAME NoteSize
+	ITEMLIST
+					NAME "Medium"	VALUE NUMERIC 1 DEFAULT
+					NAME "Small"	VALUE NUMERIC 0
+					NAME "Large"	VALUE NUMERIC 2
+	END ITEMLIST
+				REQUIRED
+				#if VERSION > 1
+					NOSORT
+				#endif
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Junk E-mail"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+POLICY "Junk E-mail protection level"
+	PART "Select level:" DROPDOWNLIST
+			VALUENAME JunkMailProtection
+	ITEMLIST
+						NAME 	"No Protection"	VALUE NUMERIC 4294967295
+						NAME 	"Low (Default)"	VALUE NUMERIC 6 DEFAULT
+						NAME 	"High"		VALUE NUMERIC 3
+						NAME 	"Trusted Lists Only"	VALUE NUMERIC 2147483648
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+POLICY "Permanently delete Junk E-mail"
+	PART "Check to permanently delete Junk E-mail" CHECKBOX
+				VALUENAME JunkMailPermDelete
+				VALUEON NUMERIC 1 
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Trust E-mail from Contacts"
+	PART "Check to trust E-mail from Contacts" CHECKBOX
+				VALUENAME JunkMailTrustContacts
+				VALUEON NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Add people I e-mail to the Safe Senders List"
+	PART "Check to add outgoing recipients to Safe Senders List" CHECKBOX
+				VALUENAME JunkMailTrustOutgoingRecipients
+				VALUEON NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Overwrite or Append Junk Mail Import List"
+	PART "Check to overwrite list.  Uncheck to append." CHECKBOX
+				VALUENAME JunkMailImportAppend
+				VALUEON NUMERIC 0 
+				VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Specify path to Safe Senders list"
+	PART "Specify full path and filename to Safe Senders list" EDITTEXT
+				VALUENAME JunkMailSafeSendersFile
+	END PART
+	END POLICY
+POLICY "Specify path to Safe Recipients list"
+	PART "Specify full path and filename to Safe Recipients list" EDITTEXT
+				VALUENAME JunkMailSafeRecipientsFile
+	END PART
+	END POLICY
+POLICY "Specify path to Blocked Senders list"
+	PART "Specify full path and filename to Blocked Senders list" EDITTEXT
+				VALUENAME JunkMailBlockedSendersFile
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Mail Setup"
+POLICY "Mail account options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Send messages immediately" CHECKBOX
+			VALUENAME "Send Mail Immediately"
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Dial-up options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Warn before switching dial-up connection" CHECKBOX
+			VALUENAME "Warn on Dialup"  
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Hang up when finished sending, receiving, or updating" CHECKBOX
+			VALUENAME "Hangup after Spool"
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Automatically dial during a background Send/Receive" CHECKBOX
+			VALUENAME "Poll on DUN"  
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Mail Format"
+CATEGORY "Message format"
+POLICY "Message format/editor"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Use the following Format/Editor for e-mail messages:" DROPDOWNLIST
+			VALUENAME EditorPreference
+	ITEMLIST
+				NAME "HTML/Outlook" 			VALUE NUMERIC 131072
+				NAME "HTML/Microsoft Word" 		VALUE NUMERIC 131073 DEFAULT
+				NAME "Rich Text/Outlook" 	VALUE NUMERIC 196610
+				NAME "Rich Text/Microsoft Word" VALUE NUMERIC 196609
+				NAME "Plain Text/Outlook" 		VALUE NUMERIC 65536
+				NAME "Plain Text/Microsoft Word" 	VALUE NUMERIC 65537
+	END ITEMLIST
+			NOSORT
+	END PART
+	PART "Use Microsoft Word to read rich text e-mail messages" CHECKBOX
+			VALUENAME UseWordMail
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Internet Formatting"
+POLICY "HTML Options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "When an HTML message contains pictures located on the Internet," CHECKBOX
+			VALUENAME "Send Pictures With Document"
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "send a copy of the pictures instead of the reference to their location" TEXT
+	END PART
+	END POLICY
+POLICY "Outlook Rich Text options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "When sending Outlook Rich Text messages to Internet recipients," TEXT
+	END PART
+	PART "use this format:" DROPDOWNLIST
+			VALUENAME "Message RTF Format"
+	ITEMLIST
+				NAME "Convert to HTML format"			VALUE NUMERIC 0
+				NAME "Convert to Plain Text format"		VALUE NUMERIC 1 DEFAULT
+				NAME "Send using Outlook Rich Text format"	VALUE NUMERIC 2
+	END ITEMLIST
+		NOSORT
+	END PART
+	END POLICY
+POLICY "Plain text options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Automatically wrap text at <x> characters." NUMERIC
+			KEYNAME Software\Policies\Microsoft\Office\11.0\Common\MailSettings
+			VALUENAME PlainWrapLen
+			SPIN 1
+			#if VERSION == 1
+				SPIN 0
+			#endif
+			DEFAULT 76
+			MIN 30
+			MAX 132
+	END PART
+	PART "Encode attachments in UUENCODE format when sending a" CHECKBOX
+			VALUENAME "Message Plain Format MIME"
+			VALUEON NUMERIC 0 DEFCHECKED ;reverse
+			VALUEOFF NUMERIC 1
+	END PART
+	PART "plain text message" TEXT
+	END PART
+	PART "" TEXT
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "International Options"
+POLICY "English message headers and flags"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Use English for message headers on replies or forwards" CHECKBOX
+				VALUENAME ENMessageHeaders
+				VALUEON NUMERIC 1 
+				VALUEOFF NUMERIC 0
+	END PART
+	PART "Use English for message flags" CHECKBOX
+				VALUENAME ENMessageFlags
+				VALUEON NUMERIC 1 
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Euro encoding for outgoing messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\MSHTML\International
+	PART "When preferred encoding does not support euro, " TEXT
+	END PART
+	PART "auto-select should:" DROPDOWNLIST
+				VALUENAME Autodetect_IgnoreEuro
+	ITEMLIST
+					NAME "send messages as UTF 8" VALUE NUMERIC 0 
+					NAME "ignore euro" VALUE NUMERIC 1
+	END ITEMLIST
+	END PART
+	END POLICY
+POLICY "Auto-select encoding for outgoing messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\MSHTML\International
+	PART "Auto-select encoding for outgoing messages" CHECKBOX
+				VALUENAME Autodetect_CodePageOut
+				VALUEON NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Encoding for outgoing messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\MSHTML\International
+	PART "Use this encoding for outgoing messages:" DROPDOWNLIST
+				VALUENAME Default_CodePageOut
+	ITEMLIST
+					NAME "Arabic (ISO)" VALUE NUMERIC 28596 
+					NAME "Arabic (Windows)" VALUE NUMERIC 1256 
+					NAME "Baltic (ISO)" VALUE NUMERIC 28594 
+					NAME "Baltic (Windows)" VALUE NUMERIC 1257 
+					NAME "Central European (ISO)" VALUE NUMERIC 28592 
+					NAME "Central European (Windows)" VALUE NUMERIC 1250 
+					NAME "Chinese Simplified (GB2312)" VALUE NUMERIC 936 
+					NAME "Chinese Simplified (HZ)" VALUE NUMERIC 52936 
+					NAME "Chinese Traditional (Big5)" VALUE NUMERIC 950 
+					NAME "Cyrillic (ISO)" VALUE NUMERIC 28595 
+					NAME "Cyrillic (KOI8-R)" VALUE NUMERIC 20866 
+					NAME "Cyrillic (KOI8-U)" VALUE NUMERIC 21866 
+					NAME "Cyrillic (Windows)" VALUE NUMERIC 1251 
+					NAME "Greek (ISO)" VALUE NUMERIC 28597 
+					NAME "Greek (Windows)" VALUE NUMERIC 1253 
+					NAME "Hebrew (ISO-Logical)" VALUE NUMERIC 38598 
+					NAME "Hebrew (Windows)" VALUE NUMERIC 1255 
+					NAME "Japanese (EUC)" VALUE NUMERIC 51932 
+					NAME "Japanese (JIS)" VALUE NUMERIC 50220 
+					NAME "Japanese (JIS-Allow 1 byte Kana)" VALUE NUMERIC 50221 
+					NAME "Japanese (Shift-JIS)" VALUE NUMERIC 932 
+					NAME "Korean" VALUE NUMERIC 949 
+					NAME "Korean (EUC)" VALUE NUMERIC 51949 
+					NAME "Latin 3 (ISO)" VALUE NUMERIC 28593 
+					NAME "Latin 9(ISO)" VALUE NUMERIC 28605 
+					NAME "Thai (Windows)" VALUE NUMERIC 874 
+					NAME "Turkish (ISO)" VALUE NUMERIC 28599 
+					NAME "Turkish (Windows)" VALUE NUMERIC 1254 
+					NAME "Unicode (UTF-7)" VALUE NUMERIC 65000 
+					NAME "Unicode (UTF-8)" VALUE NUMERIC 65001 
+					NAME "US-ASCII" VALUE NUMERIC 20127 
+					NAME "User Defined" VALUE NUMERIC 50000 
+					NAME "Vietnamese (Windows)" VALUE NUMERIC 1258 
+					NAME "Western European (ISO)" VALUE NUMERIC 28591 DEFAULT
+					NAME "Western European (Windows)" VALUE NUMERIC 1252 
+	END ITEMLIST
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Stationery and Fonts"
+POLICY "Stationery Fonts"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\MailSettings
+	PART "Stationery font options:" DROPDOWNLIST
+			VALUENAME ThemeFont
+	ITEMLIST
+				NAME "Use the font specified in Stationery" VALUE NUMERIC 0 DEFAULT
+				NAME "Use user's font on replies and fwds" VALUE NUMERIC 1
+				NAME "Always use user's fonts" VALUE NUMERIC 2
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Signature"
+POLICY "Disable signatures for new messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\MailSettings
+	PART "Disable signatures for new messages" CHECKBOX
+				VALUENAME NewSignature
+				VALUEON ""
+	END PART
+	END POLICY
+POLICY "Disable signatures for replies and forwards"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\MailSettings
+	PART "Disable signatures for replies and forwards" CHECKBOX
+				VALUENAME ReplySignature
+				VALUEON ""
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Spelling"
+POLICY "General"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Spelling  
+	PART "Always suggest replacements for misspelled words" CHECKBOX
+			VALUENAME SpellAlwaysSuggest
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0 
+	END PART
+	PART "Always check spelling before sending" CHECKBOX
+			VALUENAME Check
+			VALUEON NUMERIC 1 
+			VALUEOFF NUMERIC 0 
+	END PART
+	PART "Ignore words in UPPERCASE" CHECKBOX
+			VALUENAME SpellIgnoreUpper
+			VALUEON NUMERIC 1 
+			VALUEOFF NUMERIC 0 
+	END PART
+	PART "Ignore words with numbers" CHECKBOX
+			VALUENAME SpellIgnoreNumbers
+			VALUEON NUMERIC 1 
+			VALUEOFF NUMERIC 0 
+	END PART
+	PART "Ignore original message text in reply or forward" CHECKBOX
+			KEYNAME Software\Policies\Microsoft\Office\11.0\Common\MailSettings
+			VALUENAME IgnoreReplySpelling
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0 
+	END PART
+	PART "Use AutoCorrect in Rich Text and plain text messages" CHECKBOX
+			VALUENAME UseAutoCorrect
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Security"
+POLICY "Prevent users from customizing attachment security settings"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME DisallowAttachmentCustomization
+			VALUEON NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Allow access to e-mail attachments"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "List of file extensions to allow:" EDITTEXT
+			VALUENAME Level1Remove
+	END PART
+	PART " " TEXT
+	END PART
+	PART "Example: EXE;REG;COM" TEXT
+	END PART
+	END POLICY
+POLICY "Enable access to e-mail attachments"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "List of file extensions to add to disallow list:" EDITTEXT
+			VALUENAME Level1Add
+	END PART
+	PART " " TEXT
+	END PART
+	PART "Example: EXE;REG;COM" TEXT
+	END PART
+	END POLICY
+POLICY "Outlook virus security settings"
+KEYNAME Software\Policies\Microsoft\Security
+	PART "Apply individual settings for Outlook virus security" DROPDOWNLIST
+			VALUENAME "CheckAdminSettings"
+	ITEMLIST
+				NAME "Uses default administrative settings" VALUE NUMERIC 0 DEFAULT
+				NAME "Look in the Outlook Security Settings folder" VALUE NUMERIC 1
+				NAME "Look in the Outlook 10 Security Settings folder" VALUE NUMERIC 2
+	END ITEMLIST
+			NOSORT
+	END PART
+	PART "" TEXT
+	END PART
+	PART "This setting causes Outlook to look for individual overrides" TEXT
+	END PART
+	PART "to the default virus security settings.  Configuring individual" TEXT
+	END PART
+	PART "overrides requires administrative action on the e-mail server." TEXT
+	END PART
+	PART "For more information see the Office Resource Kit at" TEXT
+	END PART
+	PART "http://www.microsoft.com/office/ork/" TEXT
+	END PART
+	END POLICY
+POLICY "Configure Add-In Trust Level"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Select Add-In Trust Level:" TEXT
+	END PART
+	PART " " DROPDOWNLIST
+			VALUENAME "AddinTrust"
+	ITEMLIST
+				NAME "Trust all, or use Exchange settings if present" VALUE NUMERIC 0 DEFAULT
+				NAME "Trust all loaded and installed COM addins" VALUE NUMERIC 1
+				NAME "Do NOT trust loaded and installed COM addins" VALUE NUMERIC 2				
+	END ITEMLIST
+	END PART
+	END POLICY
+POLICY "Security Zone for loaded Messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+	PART "Sets the Zone when loading a message" TEXT
+	END PART
+	PART " " DROPDOWNLIST
+			VALUENAME "Security Zone"
+	ITEMLIST
+				NAME "Local Machine" VALUE NUMERIC 0
+				NAME "Intranet" VALUE NUMERIC 1
+				NAME "Trusted" VALUE NUMERIC 2
+				NAME "Internet" VALUE NUMERIC 3
+				NAME "Untrusted" VALUE NUMERIC 4
+	END ITEMLIST
+	END PART
+	END POLICY
+POLICY "Item Scripting"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Scripting
+	PART "Sets how a Script will access an Item" TEXT
+	END PART
+	PART " " DROPDOWNLIST
+			VALUENAME "EnableItemScript"
+	ITEMLIST
+				NAME "Disable Item Scripts" VALUE NUMERIC 0
+				NAME "Uses IE Settings" VALUE NUMERIC 1
+				NAME "Always warns" VALUE NUMERIC 2
+	END ITEMLIST
+	END PART
+	END POLICY
+POLICY "Scripting"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Scripting
+	PART "Defines whether to allow Scripting" TEXT
+	END PART
+	PART " " DROPDOWNLIST
+			VALUENAME "EnablePreviewScript"
+	ITEMLIST
+				NAME "Disable Scripts" VALUE NUMERIC 0
+				NAME "Uses IE Settings to decide" VALUE NUMERIC 1
+	END ITEMLIST
+	END PART
+	END POLICY
+POLICY "Allow Active X One Off Forms"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Sets which ActiveX controls to allow." TEXT
+	END PART
+	PART " " DROPDOWNLIST
+			VALUENAME "AllowActiveXOneOffForms"
+	ITEMLIST
+				NAME "Load only Outlook Controls" VALUE NUMERIC 0
+				NAME "Allows only Safe Controls" VALUE NUMERIC 1
+				NAME "Allows all ActiveX Controls" VALUE NUMERIC 2
+	END ITEMLIST
+	END PART
+	END POLICY
+POLICY "Disable 'Remember Password' checkbox for Internet E-mail settings dialog"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME EnableRememberPwd
+			VALUEON NUMERIC 0
+			VALUEOFF NUMERIC 1
+	END PART
+	PART " " TEXT
+	END PART
+	PART "POP3, IMAP, and HTTP e-mail accounts are all considered" TEXT
+	END PART
+	PART "Internet e-mail accounts. Each of these are listed on the" TEXT
+	END PART
+	PART "Outlook 2002 Server Type dialog when adding a new e-mail" TEXT
+	END PART
+	PART "account." TEXT
+	END PART
+	PART "(Tools | E-mail accounts... | Add a new e-mail account | Next>)" TEXT
+	END PART
+	END POLICY
+POLICY "Prompt user to choose security settings if default settings fail"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to prompt the user; uncheck to automatically select" CHECKBOX
+			VALUENAME ForceDefaultProfile
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Do not automatically sign replies"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Disable automatic signing of signed messages on replies" CHECKBOX
+			VALUENAME NoSignOnReply
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+CATEGORY "Cryptography"
+POLICY "Required Certificate Authority"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "X.509 issue DN that restricts choice of certifying authorities:" EDITTEXT
+			VALUENAME RequiredCA
+	END PART
+	END POLICY
+POLICY "Minimum encryption settings"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Minimum key size (in bits):" NUMERIC
+			VALUENAME MinEncKey
+			SPIN 10
+			#if VERSION == 1
+				SPIN 0
+			#endif
+			DEFAULT 40
+	END PART
+	END POLICY
+POLICY "S/MIME interoperability with external clients:"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Behavior for handling S/MIME messages:" DROPDOWNLIST
+			VALUENAME ExternalSMime
+	ITEMLIST
+				NAME "Handle internally" VALUE NUMERIC 0
+				NAME "Handle externally" VALUE NUMERIC 1
+				NAME "Handle if possible" VALUE NUMERIC 2 DEFAULT
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+POLICY "Outlook Rich Text in S/MIME messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Always send Outlook Rich Text formatting in S/MIME messages" CHECKBOX
+			VALUENAME "ForceTNEF"
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "S/MIME password settings"
+KEYNAME "Software\Policies\Microsoft\Cryptography\Defaults\Provider\Microsoft Exchange Cryptographic Provider v1.0"
+	PART "Default S/MIME password time (minutes):" NUMERIC
+			VALUENAME DefPwdTime
+			SPIN 10
+			#if VERSION == 1
+				SPIN 0
+			#endif
+			DEFAULT 30
+	END PART
+	PART "Maximum S/MIME password time (minutes):" NUMERIC
+			VALUENAME MaxPwdTime
+			SPIN 10
+			#if VERSION == 1
+				SPIN 0
+			#endif
+			DEFAULT 300
+	END PART
+	END POLICY
+POLICY "Enable fix for reference count problem causing CopyTo Operations to fail"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME EMSMDBMsgRefCnt
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Important:  This setting should only be enabled for clients" TEXT
+	END PART
+	PART "running against Exchange 5.5 SP3 or later." TEXT
+	END PART
+	END POLICY
+POLICY "Message Formats"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Support the following message formats:" DROPDOWNLIST
+			VALUENAME MsgFormats
+	ITEMLIST
+				NAME "S/MIME" 		VALUE NUMERIC 1 DEFAULT
+				NAME "Exchange" 	VALUE NUMERIC 2
+				NAME "Fortezza" 	VALUE NUMERIC 20
+				NAME "S/MIME and Exchange" VALUE NUMERIC 3
+				NAME "S/MIME and Fortezza" VALUE NUMERIC 21
+				NAME "Exchange and Fortezza" VALUE NUMERIC 22
+				NAME "S/MIME, Exchange, and Fortezza" VALUE NUMERIC 23
+	END ITEMLIST
+			NOSORT			
+	END PART
+	END POLICY
+POLICY "Message when Outlook cannot find the digital ID to decode a message"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Enter error message text (max 255 characters):" EDITTEXT
+			VALUENAME NeedEncryptionString
+	END PART
+	END POLICY
+POLICY "Disable Continue button on all Encryption warning dialogs"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME DisableContinueEncryption
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Run in FIPS compliant mode"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME FIPSMode
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Do not check e-mail address against address of certificates being using"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME SupressNameChecks
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Encrypt all e-mail messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME AlwaysEncrypt
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Sign all e-mail messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME AlwaysSign
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Send all signed messages as clear signed messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME ClearSign
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Request an S/MIME receipt for all S/MIME signed messages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME RequestSecureReceipt
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "URL for S/MIME certificates"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Enter URL:" EDITTEXT
+			VALUENAME EnrollPageURL
+	END PART
+	PART "The URL can contain %1, %2,and %3 which will be replaced by" TEXT
+	END PART
+	PART "the user's name, e-mail address, and language respectively." TEXT
+	END PART
+	END POLICY
+POLICY "Ensure all S/MIME signed messages have a label"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME ForceSecurityLabel
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Disable 'Publish to GAL' button"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME PublishToGalDisabled
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Signature Warning"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Signature Warning" DROPDOWNLIST
+			VALUENAME WarnAboutInvalid
+	ITEMLIST
+				NAME "Let user decide if they want to be warned" VALUE NUMERIC 0 DEFAULT
+				NAME "Always warn about invalid signatures" 	 VALUE NUMERIC 1
+				NAME "Never warn about invalid signatures" 	 VALUE NUMERIC 2
+	END ITEMLIST
+			NOSORT			
+	END PART
+	END POLICY
+POLICY "S/MIME receipt requests"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Handle messages with S/MIME receipt requests in the following manner:" DROPDOWNLIST
+			VALUENAME RespondToReceiptRequests
+	ITEMLIST
+				NAME "Open message if receipt can't be sent"	VALUE NUMERIC 0 DEFAULT
+				NAME "Don't open message if receipt can't be sent"	VALUE NUMERIC 3
+				NAME "Always prompt before sending receipt"		VALUE NUMERIC 1
+				NAME "Never send S/MIME receipts" 	 		VALUE NUMERIC 2
+	END ITEMLIST
+			NOSORT			
+	END PART
+	END POLICY
+POLICY "Fortezza certificate policies"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Enter list of policies that can be in the policies extension" TEXT
+	END PART
+	PART "of a certificate indicating it's a Fortezza certificate" EDITTEXT
+			VALUENAME Fortezza_Policies
+	END PART
+	PART "The list should be separated by semi-colons.  For Example:" TEXT
+	END PART
+	PART "policy1;policy2;policy3" TEXT
+	END PART
+	END POLICY
+POLICY "Enable Cryptography Icons"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enable cryptography icons" CHECKBOX
+				VALUENAME ConvertSMIMEBlobSignedIcons
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+CATEGORY "Signature Status Dialog"
+POLICY "Retrieving CRLs (Certificate Revocation Lists)"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART " " DROPDOWNLIST
+				VALUENAME UseCRLChasing
+	ITEMLIST
+					NAME "Use system Default"			VALUE NUMERIC 0 DEFAULT
+					NAME "When online always retreive the CRL"	VALUE NUMERIC 1
+					NAME "Never retreive the CRL"			VALUE NUMERIC 2
+	END ITEMLIST
+				NOSORT			
+	END PART
+	END POLICY
+POLICY "Missing CRLs"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Indicate a missing CRL as a(n):" DROPDOWNLIST
+				VALUENAME SigStatusNoCRL
+	ITEMLIST
+					NAME "warning"	VALUE NUMERIC 0 DEFAULT
+					NAME "error"	VALUE NUMERIC 1
+	END ITEMLIST
+				NOSORT			
+	END PART
+	END POLICY
+POLICY "Missing root certificates "
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Indicate a missing root certificate as a(n):" DROPDOWNLIST
+				VALUENAME SigStatusNoTrustDecision
+	ITEMLIST
+					NAME "neither error nor warning"	VALUE NUMERIC 0 DEFAULT
+					NAME "warning"				VALUE NUMERIC 1
+					NAME "error"				VALUE NUMERIC 2
+	END ITEMLIST
+				NOSORT			
+	END PART
+	END POLICY
+POLICY "Promoting errors as warnings"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+				VALUENAME PromoteErrorsAsWarnings
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Attachment Secure Temporary Folder"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Enter the Secure Folder path" EDITTEXT
+				VALUENAME "OutlookSecureTempFolder"
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Automatic Picture Download Settings"
+POLICY "Block external content"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Check to block pictures and external content in HTML mail" CHECKBOX
+			VALUENAME BlockExtContent
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Permit download of content from Safe Sender and Recipient lists"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Check to permit download from Safe Senders and Safe Recipients" CHECKBOX
+                  VALUENAME UnblockSpecificSenders
+                  VALUEON NUMERIC 1 DEFCHECKED
+                  VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Permit download of content from safe zones"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Check to permit download of content from Safe Zones" CHECKBOX
+			VALUENAME UnblockSafeZone
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Block Trusted Zones."
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Check to block download of content from Trusted Zones" CHECKBOX
+			VALUENAME TrustedZone
+			VALUEON NUMERIC 0 
+			VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Block Internet"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Check to block download of content from the Internet" CHECKBOX
+			VALUENAME Internet
+			VALUEON NUMERIC 0 DEFCHECKED
+			VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Block Intranet"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Check to block download of content from the Intranet" CHECKBOX
+			VALUENAME Intranet
+			VALUEON NUMERIC 0 DEFCHECKED
+			VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Other"
+POLICY "Empty Deleted Items Folder"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Empty the Deleted Items folder upon exiting" CHECKBOX
+			VALUENAME EmptyTrash  
+			VALUEON NUMERIC 1 
+			VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+POLICY "Make Outlook the default program for E-mail, Contacts, and Calendar"
+KEYNAME software\policies\microsoft\office\11.0\outlook\options\general
+	PART "Make Outlook the default program for E-mail, Contacts, and Calendar" CHECKBOX
+			VALUENAME "Check Default Client"
+			VALUEON NUMERIC 1 
+			VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+POLICY "Preview Pane"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Mark messages as read in preview window" CHECKBOX
+			VALUENAME PreviewMarkMessage
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Wait xxx seconds before marking items as read:" NUMERIC
+			VALUENAME PreviewWaitSeconds
+			SPIN 1
+			#if VERSION == 1
+				SPIN 0
+			#endif
+			DEFAULT 5
+			MIN 1
+			MAX 999
+	END PART
+	PART "Mark item as read when selection changes" CHECKBOX
+			VALUENAME PreviewDontMarkUntilChange
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Single key reading using spacebar" CHECKBOX
+			KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+			VALUENAME SingleKeyReading
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+CATEGORY "Advanced"
+POLICY "Minimize Outlook to the system tray"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+				VALUENAME MinToTray
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+POLICY "General"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "When selecting text, automatically select entire word" CHECKBOX
+				VALUENAME WordSelect  
+				VALUEON NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+POLICY "More Options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+	PART "Warn before permanently deleting items" CHECKBOX
+				VALUENAME WarnDelete
+				VALUEON NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Enable mail logging (troubleshooting)"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Enable mail logging (troubleshooting)" CHECKBOX
+				VALUENAME EnableLogging
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Disable 'Add-In Manager...' button"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+				VALUENAME DisableAddinBtns
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+CATEGORY "Reminder Options"
+POLICY "Reminders"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Reminders  
+	PART "Display the reminder" CHECKBOX
+					VALUENAME Type
+					VALUEON NUMERIC 1 DEFCHECKED
+					VALUEOFF NUMERIC 0
+	END PART
+	PART "Play reminder sound" CHECKBOX
+					VALUENAME PlaySound
+					VALUEON NUMERIC 1 
+					VALUEOFF NUMERIC 0 DEFCHECKED 
+	END PART
+	END POLICY
+POLICY "More reminders"
+KEYNAME AppEvents\Schemes\Apps\Office97\Office97-Reminder\.Current
+	PART "Path and .wav file to play for reminder" EDITTEXT
+					VALUENAME ""
+					DEFAULT "reminder.wav"
+	END PART
+	END POLICY
+END CATEGORY
+POLICY "Disable scripts for shared folders"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to disable scripts for shared folders" CHECKBOX
+				VALUENAME SharedFolderScript
+				VALUEON NUMERIC 0 DEFCHECKED
+				VALUEOFF NUMERIC 1 
+	END PART
+	END POLICY
+POLICY "Disable scripts for public folders"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to disable scripts for public folders" CHECKBOX
+				VALUENAME PublicFolderScript
+				VALUEON NUMERIC 0 
+				VALUEOFF NUMERIC 1 
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "AutoArchive"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+POLICY "AutoArchive Settings"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Turn on AutoArchive" CHECKBOX
+			VALUENAME DoAging
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Run AutoArchive every <x> days" NUMERIC
+			VALUENAME EveryDays  
+			SPIN 1
+			#if VERSION == 1
+				SPIN 0
+			#endif
+			DEFAULT 14
+			MIN 1
+			MAX 60
+	END PART
+	PART "Prompt before AutoArchive runs" CHECKBOX
+			VALUENAME PromptForAging
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART " " TEXT
+	END PART
+	PART "During AutoArchive:" TEXT
+	END PART
+	PART "Delete expired items (e-mail folders only)" CHECKBOX
+			VALUENAME DeleteExpired  
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Archive or delete old items" CHECKBOX
+			VALUENAME ArchiveOld
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Show archive folder in folder list" CHECKBOX
+			VALUENAME ArchiveMount
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Clean out items older than" NUMERIC
+			VALUENAME ArchivePeriod
+			SPIN 1
+			#if VERSION == 1
+				SPIN 0
+			#endif
+			DEFAULT 6
+			MIN 1
+			MAX 60
+	END PART
+	PART " " DROPDOWNLIST
+			VALUENAME ArchiveGranularity
+	ITEMLIST
+				NAME "Months" VALUE NUMERIC 0 DEFAULT
+				NAME "Weeks" VALUE NUMERIC 1
+				NAME "Days" VALUE NUMERIC 2
+	END ITEMLIST
+			NOSORT
+	END PART
+	PART "Permanently delete old items" CHECKBOX
+			VALUENAME ArchiveDelete
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Retention Settings"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Turn Retention Policies On" CHECKBOX
+			VALUENAME RetentionOn
+			VALUEON NUMERIC 1 DEFCHECKED
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "" TEXT
+	END PART
+	PART "Maximum number of days to retain items in:" TEXT
+	END PART
+	PART "     Inbox:" NUMERIC
+			VALUENAME RetentionInbox
+			SPIN 1
+			MIN 0
+			DEFAULT 30
+	END PART
+	PART "     All mail folders excluding Inbox:" NUMERIC
+			VALUENAME RetentionMail
+			SPIN 1
+			MIN 0
+			DEFAULT 30
+	END PART
+	PART "     Calendar items in any folder:" NUMERIC
+			VALUENAME RetentionCalendar
+			SPIN 1
+			MIN 0
+			DEFAULT 30
+	END PART
+	PART "     All other folders being AutoArchived:" NUMERIC
+			VALUENAME RetentionOther
+			SPIN 1
+			MIN 0
+			DEFAULT 30
+	END PART
+	PART "For items not being retained:" DROPDOWNLIST
+			VALUENAME RetentionDelete
+	ITEMLIST
+				NAME "move to deleted items folder" VALUE NUMERIC 0 DEFAULT
+				NAME "permanently delete" VALUE NUMERIC 1
+	END ITEMLIST
+			NOSORT
+	END PART
+	PART "URL with corporate retention policy information:" EDITTEXT
+			VALUENAME RetentionPath
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Person Names"
+POLICY "Enable the Person Names Smart Tag"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\IM
+	PART "Check to disable the Person Names Smart Tag" CHECKBOX
+				VALUENAME Enabled
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Display Messenger Status in the From field"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\IM
+	PART "Check to disable display of Messenger Status in From field" CHECKBOX
+				VALUENAME EnablePresence
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Right-to-left"
+POLICY "Layout Options"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Calendar
+	PART "Set layout direction:" DROPDOWNLIST
+			VALUENAME "Calendar Direction"
+	ITEMLIST
+				NAME "Left to Right" VALUE NUMERIC 0 DEFAULT
+				NAME "Right to Left" VALUE NUMERIC 1
+	END ITEMLIST
+			NOSORT
+	END PART
+	PART "Set global text direction:" DROPDOWNLIST
+			VALUENAME "Text Direction"
+	ITEMLIST
+				NAME "Context-based"	VALUE NUMERIC 0 DEFAULT
+				NAME "Left to right" 	VALUE NUMERIC 1
+				NAME "Right to left"	VALUE NUMERIC 2
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Tools | Macro"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+CATEGORY "Security..."
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+POLICY "Security Level"
+	PART "Security Level" DROPDOWNLIST
+	VALUENAME Level
+	ITEMLIST
+		NAME "Very High"	VALUE NUMERIC 4
+		NAME "High"		VALUE NUMERIC 3	DEFAULT
+		NAME "Medium"		VALUE NUMERIC 2
+		NAME "Low"		VALUE NUMERIC 1
+	END ITEMLIST
+	NOSORT
+	END PART
+	END POLICY
+POLICY "Outlook: Trust all installed add-ins and templates"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Security
+	PART "Check to Trust all installed add-ins and templates" CHECKBOX
+		VALUENAME DontTrustInstalledFiles
+		VALUEON NUMERIC 0 DEFCHECKED
+		VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Tools | E-Mail Accounts"
+CATEGORY "Exchange over the Internet..."
+POLICY "Enable Exchange Over Internet User Interface"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\RPC
+	PART "Choose UI State when OS can support feature:" DROPDOWNLIST
+			VALUENAME EnableRPCTunnelingUI
+	ITEMLIST
+			NAME "Hidden" VALUE NUMERIC 0 
+			NAME "All config UI enabled" VALUE NUMERIC 1 DEFAULT
+			NAME "Enable only On/Off control but not config UI" VALUE NUMERIC 2
+			NAME "Enable config UI when settings are pre-deployed" VALUE NUMERIC 3
+			NAME "Disable but show all config UI" VALUE NUMERIC 4
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Cached Exchange Mode"
+POLICY "Disable Cached Exchange Mode on new profiles"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Check to disable Cached Exchange Mode on new profiles" CHECKBOX
+				VALUENAME Enable
+				VALUEON NUMERIC 0
+				VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "In Cached Exchange, make Send/Receive F9 null operation"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Skip sync commands containing more than one folder" CHECKBOX
+				VALUENAME NoManualOnlineSync
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Enter seconds to wait to upload changes to server..."
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Enter seconds to wait before upload(Default 15 sec.)" NUMERIC
+				VALUENAME Upload
+				SPIN 1
+				#if VERSION == 1
+					SPIN 0
+				#endif
+				DEFAULT 15
+				MIN 0
+				MAX 86400
+	END PART
+	END POLICY
+POLICY "Enter seconds to wait to download changes from server..."
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Enter seconds to wait before download(Default 30 sec.)" NUMERIC
+				VALUENAME Download
+				SPIN 1
+				#if VERSION == 1
+					SPIN 0
+				#endif
+				DEFAULT 30
+				MIN 0
+				MAX 86400
+	END PART
+	END POLICY
+POLICY "Enter maximum seconds to wait to sync changes..."
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Enter seconds to wait before sync(Default 60 sec.)" NUMERIC
+				VALUENAME Maximum
+				SPIN 1
+				#if VERSION == 1
+					SPIN 0
+				#endif
+				DEFAULT 60
+				MIN 0
+				MAX 86400
+	END PART
+	END POLICY
+POLICY "Cached Exchange Mode (File | Cached Exchange Mode)"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Select Cached Exchange Mode for new profiles" DROPDOWNLIST
+				VALUENAME CachedExchangeMode
+	ITEMLIST
+					NAME "Download Headers"		VALUE NUMERIC 1 
+					NAME "Download Full Items" 	VALUE NUMERIC 2 DEFAULT
+					NAME "Download Headers and then Full Items" VALUE NUMERIC 3
+	END ITEMLIST
+				NOSORT
+	END PART
+	END POLICY
+POLICY "Disallow Download Full Items (File | Cached Exchange Mode)"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Check to disallow Download Full Items" CHECKBOX
+				VALUENAME NoFullItems
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Disallow Download Headers then Full Items (File | Cached Exchange Mode)"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Check to disallow Download Headers then Full Items" CHECKBOX
+				VALUENAME NoDrizzle
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Disallow Download Headers (File | Cached Exchange Mode)"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Check to disallow Download Headers" CHECKBOX
+				VALUENAME NoHeaders
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Disallow On Slow Connections Only Download Headers (File | Cached Exchange Mode)"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Check to disallow On Slow Connections Only..." CHECKBOX
+				VALUENAME NoSlowHeaders
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Download Public Folder Favorites"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Cached Mode"
+	PART "Check to Download Public Folder Favorites..." CHECKBOX
+				VALUENAME SyncPFFav
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Customizable error messages"
+POLICY "List of error messages to customize"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\CustomizableAlerts
+	PART "List of error messages to customize" LISTBOX
+			EXPLICITVALUE
+	END PART
+	PART "Enter error ID for Value Name and custom button text for Value" TEXT
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Disable items in user interface"
+CATEGORY "Predefined"
+POLICY "Disable command bar buttons and menu items"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\DisabledCmdBarItemsCheckBoxes
+	PART "All folders and items: Tools | Speech" CHECKBOX
+				VALUENAME ToolsSpeech
+				VALUEON 5764
+				VALUEOFF 0
+	END PART
+	PART "All folders and items: Tools | Tools on the Web..." CHECKBOX
+				VALUENAME ToolsontheWeb
+				VALUEON 7032
+				VALUEOFF 0
+	END PART
+	PART "All folders and items: Tools | Customize" CHECKBOX
+				VALUENAME ToolsCustomize
+				VALUEON 797
+				VALUEOFF 0
+	END PART
+	PART "All folders and items: Tools | Forms | Design Options" CHECKBOX
+				KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+				VALUENAME NoForms3Design
+				VALUEON 1
+				VALUEOFF 0
+	END PART
+	PART "All folders and items: Help | Microsoft Office Online" CHECKBOX
+				VALUENAME HelpOfficeWeb
+				VALUEON 3775
+				VALUEOFF 0
+	END PART
+	PART "All folders and items: Help | Activate Product..." CHECKBOX
+				VALUENAME HelpRegistration
+				VALUEON 5933
+				VALUEOFF 0
+	END PART
+	PART "All folders and items: Help | Detect and Repair" CHECKBOX
+				VALUENAME HelpRepair
+				VALUEON 3774
+				VALUEOFF 0
+	END PART
+	PART "All folders: Go menu" CHECKBOX
+				VALUENAME WebGo
+				VALUEON 30328
+				VALUEOFF 0
+	END PART
+	PART "All folders: Go | Internet Call" CHECKBOX
+				VALUENAME GoInternetCall
+				VALUEON 31123
+				VALUEOFF 0
+	END PART
+	PART "Inbox: Tools | E-mail Accounts..." CHECKBOX
+				VALUENAME ToolsServices
+				VALUEON 6863
+				VALUEOFF 0
+	END PART
+	PART "Mail item: View | Bcc Field" CHECKBOX
+				VALUENAME ViewBccField
+				VALUEON 1860
+				VALUEOFF 0
+	ACTIONLISTON
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+					VALUENAME ShowBcc VALUE NUMERIC 0
+	END ACTIONLISTON
+	ACTIONLISTOFF
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+					VALUENAME ShowBcc VALUE DELETE
+	END ACTIONLISTOFF
+	END PART
+	PART "Mail item: View | From Field" CHECKBOX
+				VALUENAME ViewFromField
+				VALUEON 1867
+				VALUEOFF 0
+	ACTIONLISTON
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+					VALUENAME ShowFrom VALUE NUMERIC 0
+	END ACTIONLISTON
+	ACTIONLISTOFF
+					KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+					VALUENAME ShowFrom VALUE DELETE
+	END ACTIONLISTOFF
+	END PART
+	PART "Contact item: Actions | Display Map of Address" CHECKBOX
+				VALUENAME ActionDisplayMap
+				VALUEON 5602
+				VALUEOFF 0
+	END PART
+	PART "Web toolbar: Refresh Current Page" CHECKBOX
+				VALUENAME WebRefreshCurrentPage
+				VALUEON 1020
+				VALUEOFF 0
+	END PART
+	PART "Web toolbar: Start Page" CHECKBOX
+				VALUENAME WebStartPage
+				VALUEON 1016
+				VALUEOFF 0
+	END PART
+	PART "Web toolbar: Search the Web" CHECKBOX
+				VALUENAME WebSearchTheWeb
+				VALUEON 1922
+				VALUEOFF 0
+	ACTIONLISTON
+					VALUENAME FileOpenSearchTheWeb VALUE 4087
+	END ACTIONLISTON
+	ACTIONLISTOFF
+					VALUENAME FileOpenSearchTheWeb VALUE DELETE
+	END ACTIONLISTOFF
+	END PART
+	PART "Web toolbar: Address" CHECKBOX
+				VALUENAME WebAddress
+				VALUEON 1740
+				VALUEOFF 0
+	END PART
+	END POLICY
+POLICY "Disable shortcut keys"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\DisabledShortcutKeysCheckBoxes
+	PART "Ctrl+Enter (Send in a Mail item)" CHECKBOX
+				VALUENAME CtrlEnter
+				VALUEON 13,8
+				VALUEOFF 0
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Custom"
+POLICY "Disable command bar buttons and menu items"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\DisabledCmdBarItemsList
+	PART "Enter a command bar ID to disable" LISTBOX
+				VALUEPREFIX TCID
+	END PART
+	END POLICY
+POLICY "Disable shortcut keys"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\DisabledShortcutKeysList
+	PART "Enter a key and modifier to disable" LISTBOX
+				VALUEPREFIX KeyMod
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+CATEGORY "Exchange settings"
+POLICY "Exchange view information"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+	PART "Publish Exchange views in Public Folders" CHECKBOX
+				VALUENAME ExchVwPub
+				VALUEON  NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	PART "Publish Exchange views in Personal (non-public) Folders" CHECKBOX
+				VALUENAME ExchVwPsnl
+				VALUEON  NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Folder size display"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+	PART "Display 'Folder Size' button in folder properties dialog" CHECKBOX
+				VALUENAME ChkFldrSize
+				VALUEON NUMERIC 1 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "OST Creation"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\OST
+	PART "Prevent OST Creation:" CHECKBOX
+				VALUENAME NoOST
+				VALUEON NUMERIC 2 DEFCHECKED
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Personal distribution lists (Exchange only)"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\Mail
+	PART "Always validate personal DLs when sending mail" CHECKBOX
+				VALUENAME ExpandPDLUsingCache
+				VALUEON NUMERIC 0 DEFCHECKED
+				VALUEOFF NUMERIC 1 
+	END PART
+	END POLICY
+POLICY "Exchange Unicode Mode - Prefer ANSI"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\EMSP
+	PART "Do not prefer ANSI mode" CHECKBOX
+				VALUENAME PreferANSI
+				VALUEON NUMERIC 0 DEFCHECKED
+				VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Exchange Unicode Mode - Ignore Archive Format"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\EMSP
+	PART "Ignore existing format of the Archive PST" CHECKBOX
+				VALUENAME IgnoreArchiveFormat
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Exchange Unicode Mode - Ignore OST Format"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\EMSP
+	PART "Choose whether existing OST format determines mailbox mode" DROPDOWNLIST
+				VALUENAME IgnoreOSTFormat
+	ITEMLIST
+					NAME "OST Format determines mode" VALUE NUMERIC 0 DEFAULT
+					NAME "Create new OST if format doesn't match mode"  VALUE NUMERIC 1
+					NAME "Prompt to create new OST if format doesn't match mode" VALUE NUMERIC 2
+	END ITEMLIST
+	END PART
+	END POLICY
+POLICY "Offline Address Book: Enable Send/Receive Group Download"
+KEYNAME "Software\Policies\Microsoft\Exchange\Exchange Provider"
+	PART "Allow full download in cached mode/F9 sync/send receive groups" CHECKBOX
+				VALUENAME "Allow SRS Full OAB Download"
+				VALUEON  NUMERIC 1 
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Offline Address Book: Limit number of full OAB downloads"
+KEYNAME "Software\Policies\Microsoft\Exchange\Exchange Provider"
+	PART "Allow xx full downloads per 13hr period" NUMERIC
+				VALUENAME "Allow SRS CE Full OAB Download"
+				DEFAULT 1
+	END PART
+	END POLICY
+POLICY "Offline Address Book: Limit number of incremental OAB downloads"
+KEYNAME "Software\Policies\Microsoft\Exchange\Exchange Provider"
+	PART "Allow xx incremental OAB downloads per 13hr period" NUMERIC
+				VALUENAME "Limit SRS Incremental Download"
+	END PART
+	END POLICY
+POLICY "Offline Address Book: Limit manual OAB downloads"
+KEYNAME "Software\Policies\Microsoft\Exchange\Exchange Provider"
+	PART "Allow xx manual OAB downloads per 13hr period" NUMERIC
+				VALUENAME "Limit Manual OAB Download"
+	END PART
+	END POLICY
+POLICY "Offline Address Book: Prompt before Downloading Full OAB"
+KEYNAME "Software\Policies\Microsoft\Exchange\Exchange Provider"
+	PART "Prompt the user before a full OAB download is executed" CHECKBOX
+			VALUENAME "Allow Full OAB Prompt"
+			VALUEON  NUMERIC 1 
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Cached Exchange low bandwidth threshold"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\RPC
+	PART "Enter the bitrate (kbps: 128k = 128) threshold to detect low bandwidth" TEXT
+	END PART
+	PART "(0 - 1,000,000 kbps)" NUMERIC
+				VALUENAME SlowBitRate
+				MAX 1000000
+	END PART
+	END POLICY
+POLICY "Authentication with Exchange Server"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Security"
+	PART "Select the authentication with Exchange server" DROPDOWNLIST
+			VALUENAME AuthenticationService
+	ITEMLIST
+			NAME "Kerberos/NTLM Password Authentication"	VALUE NUMERIC 9 DEFAULT
+			NAME "Kerberos Password Authentication"		VALUE NUMERIC 16
+			NAME "NTLM Password Authentication"			VALUE NUMERIC 10
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+POLICY "Use legacy Outlook authentication dialogs"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\RPC"
+	PART "Use legacy Outlook authentication dialogs with Change Password" CHECKBOX
+			VALUENAME DisableCredUI
+			VALUEON  NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Outlook Today settings"
+POLICY "Outlook Today availability"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Today
+	PART "Outlook Today is available" CHECKBOX
+				VALUENAME Disable
+				VALUEON NUMERIC 0 DEFCHECKED
+				VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "URL for custom Outlook Today"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Today
+	PART "Enter the URL of Outlook Today's web page (max 129 chars):" EDITTEXT
+				VALUENAME "Url"
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Folder Home Pages for Outlook special folders"
+POLICY "Inbox Folder Home Page"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Inbox
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Disable Folder Home Pages"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview
+	PART "Disable Folder Home Pages for all folders" CHECKBOX
+				VALUENAME Disable
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Calendar Folder Home"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Calendar
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Contacts Folder Home Page"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Contacts
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Deleted Items Folder Home Page"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Deleted Items"
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Drafts Folder Home Page"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Drafts
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Journal Folder Home Page"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Journal
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Notes Folder Home Page"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Notes
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Outbox Folder Home Page"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Outbox
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Sent Items Folder Home Page"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Sent Mail"
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+POLICY "Tasks Folder Home Page"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Webview\Tasks
+	PART "Show associated web page" CHECKBOX
+				VALUENAME Show
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	PART "URL address of associated web page:" EDITTEXT
+				VALUENAME Url
+	END PART
+	PART "Turn off Internet Explorer security checks for this web page" CHECKBOX
+				VALUENAME Security
+				VALUEON "yes"
+				VALUEOFF "no"
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Search Folders"
+POLICY "Keep search folders offline"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+	PART "Specify days to keep folders alive in offline or cached mode:" NUMERIC
+				VALUENAME SearchOfflineKeepAliveDays
+				SPIN 1
+				DEFAULT 60
+				MIN 0
+				MAX 999
+	END PART
+	END POLICY
+POLICY "Keep search folders in Exchange online"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+	PART "Specify days to keep folders alive in Exchange online mode:" NUMERIC
+				VALUENAME SearchOnlineKeepAliveDays
+				SPIN 1
+				DEFAULT 60
+				MIN 0
+				MAX 1000
+	END PART
+	END POLICY
+POLICY "Default search folders at startup"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Setup
+	PART "Do not creat default search folders at startup" CHECKBOX
+				VALUENAME SearchNoCreateDefaults
+				VALUEON NUMERIC 1
+				VALUEOFF NUMERIC 0				
+	END PART
+	END POLICY
+POLICY "Maximum Number of Online Search Folders per mailbox"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options\General
+	PART "Specify maximum number of Search Folders " TEXT
+	END PART
+	PART "for Exchange server to run:" NUMERIC
+			VALUENAME SearchMaxNumberOnline
+			SPIN 1
+			DEFAULT 999
+			MIN 0
+			MAX 999
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "SharePoint Integration"
+POLICY "Disable Sharepoint integration in Outlook"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Check to disable Sharepoint integration in Outlook" CHECKBOX
+			VALUENAME DisallowSTS
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Sharepoint folder sync interval"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Select interval to sync Sharepoint folders: (minutes)" NUMERIC
+			VALUENAME STSSyncInterval
+				SPIN 1
+				DEFAULT 20
+				MIN 0
+				MAX 1440
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Meeting Workspace"
+POLICY "Disable Meeting Workspace button"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Meetings\Profile
+	PART "Check to disable Meeting Workspace button" CHECKBOX
+			VALUENAME EntryUI
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Disable user entries to server list"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Meetings\Profile
+	PART "Check to disable users from adding entries to server list" DROPDOWNLIST
+			VALUENAME ServerUI
+	ITEMLIST
+				NAME "Publish default, allow others"	VALUE NUMERIC 1 DEFAULT
+				NAME "Publish default, disallow others"	VALUE NUMERIC 2
+	END ITEMLIST
+	END PART
+	END POLICY
+POLICY "Default servers and data for Meeting Workspaces"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Meetings\Profile
+	PART "Default:" EDITTEXT
+			VALUENAME MRUInternal
+	END PART
+	PART "This policy populates the default servers and server data for " TEXT
+	END PART
+	PART "Meeting Workspaces.  It is recommended that you draft this " TEXT
+	END PART
+	PART "policy in a text editor and paste it into the dialog.  " TEXT
+	END PART
+	PART "You may choose to add up to 5 servers to this policy.  " TEXT
+	END PART
+	PART "Each server must be added as a pipe delimited list, a total " TEXT
+	END PART
+	PART "of 6 pipes per record.  The OrganizerName field should be " TEXT
+	END PART
+	PART "left blank.  For further details, see the Office Resource Kit " TEXT
+	END PART
+	PART "at http://www.microsoft.com/office/ork " TEXT
+	END PART
+	PART "Example: " TEXT
+	END PART
+	PART "http://server1 | Friendly name for server 1 | templateLCID | templateID |" TEXT
+	END PART
+	PART "TemplateName | OrganizerName | http://server2 |..." TEXT
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Outlook System Tray Icon"
+POLICY "Time before notifying of pending RPC via balloon"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Display Types"
+	PART "Time to wait if a high bandwidth connection is detected:" DROPDOWNLIST
+			VALUENAME TimetoShowRPCMessageHighBandwidth
+	ITEMLIST
+				NAME "15 seconds"	VALUE NUMERIC 15000
+				NAME "30 seconds"	VALUE NUMERIC 30000 DEFAULT
+				NAME "1 minute"		VALUE NUMERIC 60000
+				NAME "2 minutes"	VALUE NUMERIC 120000
+				NAME "5 minutes"	VALUE NUMERIC 300000
+				NAME "10 minutes"	VALUE NUMERIC 600000
+	END ITEMLIST
+			NOSORT
+	END PART
+	PART "Time to wait if a low bandwidth connection is detected:" DROPDOWNLIST
+			VALUENAME TimetoShowRPCMessageLowBandwidth
+	ITEMLIST
+				NAME "15 seconds"	VALUE NUMERIC 15000
+				NAME "30 seconds"	VALUE NUMERIC 30000
+				NAME "1 minute"		VALUE NUMERIC 60000
+				NAME "2 minutes"	VALUE NUMERIC 120000 DEFAULT
+				NAME "5 minutes"	VALUE NUMERIC 300000
+				NAME "10 minutes"	VALUE NUMERIC 600000
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+POLICY "Time before notifying of pending RPC via notifications tray icon"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Outlook\Display Types"
+	PART "Time to wait if a high bandwidth connection is detected:" DROPDOWNLIST
+			VALUENAME TimeToUpdateTrayIconHighBandwidth
+	ITEMLIST
+				NAME "3 seconds"	VALUE NUMERIC 3000 DEFAULT
+				NAME "5 seconds"	VALUE NUMERIC 5000
+				NAME "10 seconds"	VALUE NUMERIC 10000
+				NAME "15 seconds"	VALUE NUMERIC 15000
+				NAME "30 seconds"	VALUE NUMERIC 30000
+				NAME "1 minute"	VALUE NUMERIC 60000
+				NAME "2 minutes"	VALUE NUMERIC 120000
+	END ITEMLIST
+			NOSORT
+	END PART
+	PART "Time to wait if a low bandwidth connection is detected:" DROPDOWNLIST
+			VALUENAME TimeToUpdateTrayIconLowBandwidth
+	ITEMLIST
+				NAME "3 seconds"	VALUE NUMERIC 3000
+				NAME "5 seconds"	VALUE NUMERIC 5000
+				NAME "10 seconds"	VALUE NUMERIC 10000 DEFAULT
+				NAME "15 seconds"	VALUE NUMERIC 15000
+				NAME "30 seconds"	VALUE NUMERIC 30000
+				NAME "1 minute"		VALUE NUMERIC 60000
+				NAME "2 minutes"	VALUE NUMERIC 120000
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Miscellaneous"
+CATEGORY "PST Settings"
+POLICY "Default location for PST files"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+	PART "Default location for PST files" EDITTEXT
+			VALUENAME ForcePSTPath
+	END PART
+	PART " " TEXT
+	END PART
+	PART "Environment variables such as %USERPROFILE% can be used." TEXT
+	END PART
+	PART "Example: %USERPROFILE%\Local Settings\Application Data\" TEXT
+	END PART
+	PART "                Microsoft\Outlook\" TEXT
+	END PART
+	END POLICY
+POLICY "Preferred PST Mode (Unicode/ANSI)"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+	PART "Choose a default format for new PSTs" DROPDOWNLIST
+		VALUENAME NewPSTFormat
+	ITEMLIST
+				NAME "Prefer Unicode PST"	VALUE NUMERIC 0 DEFAULT
+				NAME "Prefer ANSI PST"		VALUE NUMERIC 1
+				NAME "Enforce Unicode PST"	VALUE NUMERIC 2
+				NAME "Enforce ANSI PST"		VALUE NUMERIC 3
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+POLICY "Large PST: Absolute maximum size"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\PST
+	PART "Enter absolute maximum size for PST (in megabytes)" TEXT
+	END PART
+	PART "(0 - 4,294,967,295 MB)" NUMERIC
+			VALUENAME MaxLargeFileSize
+			MAX 4294967295	
+	END PART
+	END POLICY
+POLICY "Large PST: Size to disable adding new content"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\PST
+	PART "Enter size to disable adding new content to PST (in megabytes)" TEXT
+	END PART
+	PART "(0 - 4,294,967,295 MB)" NUMERIC
+			VALUENAME WarnLargeFileSize
+			MAX 4294967295	
+	END PART
+	END POLICY
+POLICY "Legacy PST: Absolute maximum size"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\PST
+	PART "Enter absolute maximum size for PST (in bytes)" TEXT
+	END PART
+	PART "(0 - 2,075,149,312 Bytes)" NUMERIC
+			VALUENAME MaxFileSize
+			MAX 2075149312	
+	END PART
+	END POLICY
+POLICY "Legacy PST: Size to disable adding new content"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\PST
+	PART "Enter size to disable adding new content to PST (in bytes)" TEXT
+	END PART
+	PART "(0 - 2,075,149,312 Bytes)" NUMERIC
+			VALUENAME WarnFileSize	
+			MAX 2075149312
+	END PART
+	END POLICY
+POLICY "Permanently remove all deleted items"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\PST
+	PART "Permanently remove all deleted items" CHECKBOX
+			VALUENAME PSTNullFreeOnClose
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+END CATEGORY
+CATEGORY "Online Meeting Settings"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+POLICY "Online Meetings"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+	PART "Disable all online meeting options in Outlook" CHECKBOX
+			VALUENAME DisableOnlineMeetings
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Microsoft Exchange Conferencing"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\ExchangeConferencing
+	PART "Disable Exchange Conferencing options in Outlook" CHECKBOX
+			VALUENAME ExchangeConferencing
+			VALUEON NUMERIC 0
+			VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+POLICY "Windows Media Services Meeting"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\WindowsMediaMeeting
+	PART "Disable Windows Media Services options in Outlook" CHECKBOX
+			VALUENAME WindowsMediaMeeting
+			VALUEON NUMERIC 0
+			VALUEOFF NUMERIC 1
+	END PART
+	END POLICY
+END CATEGORY
+POLICY "Disable VLV Browsing on LDAP servers"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\LDAP
+	PART "Check to turn setting on; uncheck to turn setting off" CHECKBOX
+			VALUENAME DisableVLVBrowsing
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Do not download permission for e-mail during offline Exchange folder sync"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Common\Drm
+	PART "Check to disable download of permission" CHECKBOX
+			VALUENAME DoNotAcquireDRMLicenseOnSync 
+			VALUEON NUMERIC 1 
+			VALUEOFF NUMERIC 0 
+	END PART
+	END POLICY
+POLICY "Auto-repair of MAPI32.DLL"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\
+	PART "Outlook requires the correct version of MAPI32.DLL be installed" TEXT
+	END PART
+	PART "for it to function properly. Sometimes other programs install a" TEXT
+	END PART
+	PART "version that is incompatible with Outlook. Rather than run the" TEXT
+	END PART
+	PART "FIXMAPI.EXE utility manually, Outlook can run it automatically" TEXT
+	END PART
+	PART "any time it detects a problem." TEXT
+	END PART
+	PART "Choose a FIXMAPI.EXE option:" DROPDOWNLIST
+			VALUENAME FixMapi
+	ITEMLIST
+				NAME "Ask user before running FIXMAPI.EXE"	VALUE NUMERIC 5 DEFAULT
+				NAME "Do not ask; automatically repair"		VALUE NUMERIC 6
+	END ITEMLIST
+			NOSORT
+	END PART
+	END POLICY
+POLICY "Prevent users from adding e-mail account types"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Options
+	PART "Prevent users from adding HTTP e-mail accounts" CHECKBOX
+			VALUENAME DisableHTTP
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Prevent users from adding Exchange e-mail accounts" CHECKBOX
+			VALUENAME DisableExchange
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Prevent users from adding POP3 e-mail accounts" CHECKBOX
+			VALUENAME DisablePOP3
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Prevent users from adding IMAP e-mail accounts" CHECKBOX
+			VALUENAME DisableIMAP
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART "Prevent users from adding other types of e-mail accounts" CHECKBOX
+			VALUENAME DisableOtherTypes
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Prevent users from making changes to Outlook profiles"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Setup
+	PART "Check to enforce setting on; uncheck to enforce setting off" CHECKBOX
+			VALUENAME ModifyAccounts
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	PART " " TEXT
+	END PART
+	PART "When set, users will be unable to access profile configuration through" TEXT
+	END PART
+	PART "Tools | E-mail Accounts... or through the the Mail Control Panel Applet." TEXT
+	END PART
+	END POLICY
+POLICY "Disable Windows Friendly Logon Mail Query"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook
+	PART "Check to disable Windows Friendly Logon Mail Query" CHECKBOX
+			VALUENAME DontUpdateFriendlyLogon
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Disable Dual Font Support"
+KEYNAME Software\Policies\Microsoft\Office\11.0\Outlook\Preferences
+	PART "Check to disable Dual Font Support" CHECKBOX
+			VALUENAME DontUseDualFont
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Offline Address Book exact alias matching"
+KEYNAME "Software\Policies\Microsoft\Exchange\Exchange Provider"
+	PART "Check to force alias to do exact match" CHECKBOX
+			VALUENAME "OAB Exact Alias Match" 
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+POLICY "Automatically show the Outlook Attachment pane when adding attachment"
+KEYNAME "Software\Policies\Microsoft\Office\11.0\Common\MailSettings"
+	PART "Check to automatically show Attachment pane" CHECKBOX
+			VALUENAME "SharingOptionsCount" 
+			VALUEON NUMERIC 1
+			VALUEOFF NUMERIC 0
+	END PART
+	END POLICY
+END CATEGORY
+END CATEGORY
+
+

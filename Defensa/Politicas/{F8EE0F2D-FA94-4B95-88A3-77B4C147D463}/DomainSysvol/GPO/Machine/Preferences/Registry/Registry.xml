@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RegistrySettings clsid="{A3CCFC41-DFDB-43a5-8D26-0FE8B954DA51}"><Registry clsid="{9CD4B2F4-923D-47f5-A062-E897DD1DAD50}" name="EnableMDNS" status="EnableMDNS" image="10" changed="2025-02-11 19:18:59" uid="{31D3B1CA-9FF2-4D02-8796-C834E0A90256}"><Properties action="C" displayDecimal="1" default="0" hive="HKEY_LOCAL_MACHINE" key="SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" name="EnableMDNS" type="REG_DWORD" value="00000000"/></Registry>
+	<Registry clsid="{9CD4B2F4-923D-47f5-A062-E897DD1DAD50}" name="EnableMDNS" status="EnableMDNS" image="10" changed="2025-02-11 19:19:42" uid="{BBF1724F-94B2-42AF-A42D-2099E9303881}"><Properties action="C" displayDecimal="1" default="0" hive="HKEY_LOCAL_MACHINE" key="SYSTEM\CurrentControlSet\Services\Dnscache\Parameters" name="EnableMDNS" type="REG_DWORD" value="00000000"/></Registry>
+</RegistrySettings>
